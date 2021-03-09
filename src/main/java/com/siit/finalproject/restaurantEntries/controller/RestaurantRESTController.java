@@ -51,8 +51,8 @@ public class RestaurantRESTController {
     }
 
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantGetDTO> updateRestaurant(@RequestBody RestaurantGetDTO restaurantGetDTO){
-        RestaurantGetDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantGetDTO);
+    public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
+        RestaurantPostDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
 
         return ResponseEntity.ok()
                 .body(updatedRestaurant);

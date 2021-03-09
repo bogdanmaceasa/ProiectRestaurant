@@ -59,15 +59,8 @@ public class RestaurantsService {
 //    }
 
 
-    public RestaurantGetDTO updateRestaurant(RestaurantGetDTO restaurantGetDTO) {
-//        restaurantGetRepository.updateRestaurant(
-//                restaurantGetDTO.getId(),
-//                restaurantGetDTO.getName(),
-//                restaurantGetDTO.getAddress(),
-//                restaurantGetDTO.getSpecialities(),
-//                restaurantGetDTO.getDetails(),
-//                restaurantGetDTO.getBooking());
-
-        return restaurantGetDTO;
+    public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
+        restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
+        return restaurantPostDTO;
     }
 }
