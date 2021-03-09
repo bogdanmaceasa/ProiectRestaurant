@@ -11,27 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
-public class RestaurantDTO {
+public class RestaurantGetDTO {
 
     private int id;
 
     private String name;
-
-    @ToString.Exclude
-    @NotNull
-    private int addressId;
-
-    @ToString.Exclude
-    @NotNull
-    private int typeId;
-
-    @ToString.Exclude
-    @NotNull
-    private int detailsId;
-
-    @ToString.Exclude
-    @NotNull
-    private int bookingId;
 
     private SpecialitiesEntity specialities;
 
@@ -40,5 +24,7 @@ public class RestaurantDTO {
     private Booking booking;
 
     private AddressEntity address;
+
+
 
 }

@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -21,35 +20,20 @@ public class RestaurantsEntity {
 
     private String name;
 
-    @ToString.Exclude
-    @Column(name = "address_id")
-    private int addressId;
-
-    @ToString.Exclude
-    @Column(name = "type_id")
-    private int typeId;
-
-    @ToString.Exclude
-    @Column(name = "details_id")
-    private int detailsId;
-
-    @ToString.Exclude
-    @Column(name = "booking_id")
-    private int bookingId;
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")    // insertable=false, updatable=false
+    private AddressEntity address;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_id", referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "specialities_id", referencedColumnName = "id")
     private SpecialitiesEntity specialities;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "details_id", referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "details_id", referencedColumnName = "id")
     private DetailsEntity details;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
     private Booking booking;
 
-    @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id", insertable=false, updatable=false)
-    private AddressEntity address;
 }
