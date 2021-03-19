@@ -1,8 +1,8 @@
-package com.siit.finalproject.restaurantEntries.service;
+package com.siit.finalproject.specialities.service;
 
-import com.siit.finalproject.restaurantEntries.mapper.MapperForGetSpecialities;
-import com.siit.finalproject.restaurantEntries.model.DTO.SpecialitiesDTO;
-import com.siit.finalproject.restaurantEntries.repository.SpecialitiesRepository;
+import com.siit.finalproject.specialities.mapper.MapperForGetSpecialities;
+import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
+import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

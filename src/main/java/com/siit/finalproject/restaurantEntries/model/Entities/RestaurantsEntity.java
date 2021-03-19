@@ -1,9 +1,13 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
 import com.siit.finalproject.booking.Booking;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -21,12 +25,11 @@ public class RestaurantsEntity {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id")    // insertable=false, updatable=false
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "specialities_id", referencedColumnName = "id")
-    private SpecialitiesEntity specialities;
+    @OneToMany(mappedBy = "restaurantId")
+    private Set<RestaurantSpecialitiesEntity> specialities;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "details_id", referencedColumnName = "id")

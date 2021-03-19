@@ -2,10 +2,9 @@ package com.siit.finalproject._controller;
 
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.SpecialitiesDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsJoinEntity;
+import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
-import com.siit.finalproject.restaurantEntries.service.SpecialitiesService;
+import com.siit.finalproject.specialities.service.SpecialitiesService;
 import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +35,7 @@ public class RestaurantRESTController {
 //    }
 
     @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantsJoinEntity> getAllRestaurants(){
+    public List<RestaurantGetDTO> getAllRestaurants(){
         return restaurantsService.getAllRestaurants();
     }
 
@@ -63,8 +62,8 @@ public class RestaurantRESTController {
     }
 
     @PostMapping(value="/restaurants/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantPostDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
-        RestaurantPostDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
+    public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
+        RestaurantGetDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 //                .path("/{id}")
                 .buildAndExpand(createdRestaurant.getId())

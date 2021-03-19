@@ -1,16 +1,13 @@
 package com.siit.finalproject.restaurantEntries.repository;
 
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.*;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
-public interface RestaurantRepository extends JpaRepository<RestaurantsJoinEntity,Integer> {
-// Used SELECT QUERIES!!!!!!!!
+public interface RestaurantRepository extends JpaRepository<RestaurantsEntity,Integer> {
 
 
-    List<RestaurantPostDTO> findAllByNameIsContaining(String name);
+    RestaurantsEntity findByName(String name);
 
 }

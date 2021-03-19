@@ -1,4 +1,4 @@
-package com.siit.finalproject.restaurantEntries.model.DTO;
+package com.siit.finalproject.specialities.model.DTO;
 
 
 import lombok.AllArgsConstructor;
