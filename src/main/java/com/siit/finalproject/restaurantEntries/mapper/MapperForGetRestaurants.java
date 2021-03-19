@@ -1,7 +1,9 @@
 package com.siit.finalproject.restaurantEntries.mapper;
 
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsJoinEntity;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapperForGetRestaurants {
 
-    public RestaurantGetDTO mapEntityToGetDTO(RestaurantsEntity restaurantsEntity) {
+    public RestaurantGetDTO mapEntityToGetDTO(RestaurantsJoinEntity restaurantsEntity) {
         return RestaurantGetDTO.builder()
                 .id(restaurantsEntity.getId())
                 .name(restaurantsEntity.getName())

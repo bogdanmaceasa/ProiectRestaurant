@@ -1,25 +1,23 @@
-package com.siit.finalproject.userAccounts.model;
+package com.siit.finalproject.userAccounts.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
-public class Users {
+public class UserDTO {
 
-    @Id
     private int id;
 
     private String name;
 
     private String email;
 
-    @Column( name = "user_type")
     private int userType;
+
 
 }

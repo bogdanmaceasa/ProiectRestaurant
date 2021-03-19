@@ -1,8 +1,12 @@
-package com.siit.finalproject.restaurantEntries.controller;
+package com.siit.finalproject._controller;
 
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurantEntries.model.DTO.SpecialitiesDTO;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsJoinEntity;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
+import com.siit.finalproject.restaurantEntries.service.SpecialitiesService;
+import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.MediaType;
@@ -16,18 +20,30 @@ import java.util.Optional;
 
 
 @RestController
+//@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token"})
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
-@RequestMapping("/restaurants")
+//@RequestMapping("/restaurants")
 public class RestaurantRESTController {
 
     private final RestaurantsService restaurantsService;
+    private final UserService userService;
+    private final SpecialitiesService specialitiesService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantGetDTO> getAllRestaurants(){
+//    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<RestaurantGetDTO> getAllRestaurants(){
+//        return restaurantsService.getAllRestaurants();
+//    }
+
+    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RestaurantsJoinEntity> getAllRestaurants(){
         return restaurantsService.getAllRestaurants();
     }
 
+    @GetMapping(value="/specialities",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SpecialitiesDTO> getAllSpecialities(){
+        return specialitiesService.getAllSpecialities();
+    }
 
     //http://localhost:8080/restaurants/query?name=dei
 //    @GetMapping(value = "/query",produces = MediaType.APPLICATION_JSON_VALUE )
@@ -38,8 +54,15 @@ public class RestaurantRESTController {
 //    public String getFoos(@RequestParam Optional<String> id){
 //        return "ID: " + id.orElseGet(() -> "not provided");
 
+    @PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity login (@RequestParam String username, @RequestParam String password){
+        if (userService.checkUser(username,password) != null )
+        return ResponseEntity.accepted().body("Authenticated");
 
-    @PostMapping(value="/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping(value="/restaurants/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantPostDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
         RestaurantPostDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -50,7 +73,7 @@ public class RestaurantRESTController {
                 .body(createdRestaurant);
     }
 
-    @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/restaurants/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
         RestaurantPostDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
 
@@ -58,7 +81,7 @@ public class RestaurantRESTController {
                 .body(updatedRestaurant);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "/restaurants/delete")
     public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id){
         Optional<RestaurantGetDTO> output = restaurantsService.deleteRestaurant(id);
 

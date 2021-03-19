@@ -20,10 +20,6 @@ public class SpecialitiesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String type1;
-
-    private String type2;
-
-    private String type3;
+    private String type;
 
 }

@@ -7,11 +7,15 @@ import com.siit.finalproject.restaurantEntries.model.Entities.SpecialitiesEntity
 import com.sun.istack.NotNull;
 import lombok.*;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class RestaurantPostDTO {
+public class RestaurantPostDTO implements Serializable {
 
     private int id;
 
@@ -21,7 +25,7 @@ public class RestaurantPostDTO {
     private int addressId;
 
     @NotNull
-    private int specialitiesId;
+    private HashSet<Integer> specialities;
 
     @NotNull
     private int detailsId;

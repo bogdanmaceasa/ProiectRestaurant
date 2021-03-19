@@ -1,17 +1,24 @@
 package com.siit.finalproject.restaurantEntries.service;
 
 
+import com.siit.finalproject.restaurantEntries.mapper.MapperForGetSpecialities;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForPostRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsJoinEntity;
+import com.siit.finalproject.restaurantEntries.repository.RestaurantJoinRepository;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
-//import com.siit.finalproject.restaurantEntries.repository.RestaurantPostRepository;
+import com.siit.finalproject.restaurantEntries.repository.RestaurantSpecialitiesRepository;
+import com.siit.finalproject.restaurantEntries.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 import static java.util.stream.Collectors.toList;
@@ -23,19 +30,42 @@ public class RestaurantsService {
 
 
     private final RestaurantRepository restaurantRepository;
-//    private final RestaurantPostRepository restaurantPostRepository;
+    private final RestaurantJoinRepository restaurantJoinRepository;
     private final MapperForGetRestaurants mapperForGetRestaurants;
     private final MapperForPostRestaurants mapperForPostRestaurants;
+    private final SpecialitiesRepository specialitiesRepository;
+    private final RestaurantSpecialitiesRepository restaurantSpecialitiesRepository;
 
-    public List<RestaurantGetDTO> getAllRestaurants() {
-        return restaurantRepository.findAll()
-                .stream()
-                .map(rest -> mapperForGetRestaurants.mapEntityToGetDTO(rest))
-                .collect(toList());
+
+
+//    public List<RestaurantGetDTO> getAllRestaurants() {
+//        return restaurantRepository.findAll()
+//                .stream()
+//                .map(rest -> mapperForGetRestaurants.mapEntityToGetDTO(rest))
+//                .collect(toList());
+//    }
+
+    public List<RestaurantsJoinEntity> getAllRestaurants() {
+        return restaurantJoinRepository.findAll();
+
     }
+
+//    public RestaurantPostDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
+//        restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
+//        return restaurantPostDTO;
+//    }
+
 
     public RestaurantPostDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
+        restaurantPostDTO.getSpecialities()
+                .stream()
+                .map(s -> specialitiesRepository.findById(s).get())
+                .map( s-> restaurantSpecialitiesRepository.save((RestaurantSpecialitiesEntity.builder()
+                                                                                            .specialitiesEntity(s)
+                                                                                            .restaurantsEntity(restaurantJoinRepository.findById(restaurantPostDTO.getId()).get())
+                                                                                            .build()))
+                );
         return restaurantPostDTO;
     }
 
@@ -46,8 +76,6 @@ public class RestaurantsService {
 
         return restaurantsEntity;
     }
-
-
 //
 //    public List<RestaurantDTO> searchRestaurantByName(String name) {
 //        return restaurantRepository.findAllByNameIsContaining(name)
@@ -63,4 +91,8 @@ public class RestaurantsService {
         restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
         return restaurantPostDTO;
     }
+
+
+
+
 }
