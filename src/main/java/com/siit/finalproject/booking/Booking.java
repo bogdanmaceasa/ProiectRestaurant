@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Data
 @Builder
 @Entity
-@Table( name = "booking")
+@Table(name = "booking")
 public class Booking {
 
     @Id

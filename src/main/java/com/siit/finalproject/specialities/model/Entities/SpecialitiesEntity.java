@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @Builder
 @Entity
-@Table( name = "specialities")
+@Table(name = "specialities")
 public class SpecialitiesEntity {
 
     @Id

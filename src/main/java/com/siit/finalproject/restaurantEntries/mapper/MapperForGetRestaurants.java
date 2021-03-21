@@ -28,7 +28,7 @@ public class MapperForGetRestaurants {
                 .address(restaurantsEntity.getAddress())
 //                .specialities(restaurantsEntity.getSpecialities())
                 .specialities(restaurantsEntity.getSpecialities().stream()
-                        .map(s-> s.getSpecialityId())
+                        .map(s -> s.getSpecialityId())
                         .map(s -> specialitiesRepository.findTypeById(s))
                         .collect(Collectors.toSet()))
                 .details(restaurantsEntity.getDetails())

@@ -16,6 +16,7 @@ public class SpecialitiesDTO {
 
     private int id;
 
-    private String type;;
+    private String type;
+    ;
 
 }

@@ -29,5 +29,4 @@ public class RestaurantGetDTO {
     private AddressEntity address;
 
 
-
 }

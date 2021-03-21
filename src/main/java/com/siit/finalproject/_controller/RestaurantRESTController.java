@@ -34,13 +34,13 @@ public class RestaurantRESTController {
 //        return restaurantsService.getAllRestaurants();
 //    }
 
-    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantGetDTO> getAllRestaurants(){
+    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RestaurantGetDTO> getAllRestaurants() {
         return restaurantsService.getAllRestaurants();
     }
 
-    @GetMapping(value="/specialities",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SpecialitiesDTO> getAllSpecialities(){
+    @GetMapping(value = "/specialities", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SpecialitiesDTO> getAllSpecialities() {
         return specialitiesService.getAllSpecialities();
     }
 
@@ -53,16 +53,16 @@ public class RestaurantRESTController {
 //    public String getFoos(@RequestParam Optional<String> id){
 //        return "ID: " + id.orElseGet(() -> "not provided");
 
-    @PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity login (@RequestParam String username, @RequestParam String password){
-        if (userService.checkUser(username,password) != null )
-        return ResponseEntity.accepted().body("Authenticated");
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
+        if (userService.checkUser(username, password) != null)
+            return ResponseEntity.accepted().body("Authenticated");
 
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping(value="/restaurants/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
+    @PostMapping(value = "/restaurants/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantGetDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 //                .path("/{id}")
@@ -73,7 +73,7 @@ public class RestaurantRESTController {
     }
 
     @PutMapping(value = "/restaurants/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO){
+    public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantPostDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
 
         return ResponseEntity.ok()
@@ -81,10 +81,10 @@ public class RestaurantRESTController {
     }
 
     @DeleteMapping(value = "/restaurants/delete")
-    public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id){
+    public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id) {
         Optional<RestaurantGetDTO> output = restaurantsService.deleteRestaurant(id);
 
-        if ( output.isPresent())
+        if (output.isPresent())
             return ResponseEntity.ok().build();
 
         return ResponseEntity.notFound().build();

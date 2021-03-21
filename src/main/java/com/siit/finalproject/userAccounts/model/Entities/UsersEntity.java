@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Builder
 @Data
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class UsersEntity {
 
     @Id
@@ -22,7 +22,7 @@ public class UsersEntity {
 
     private String password;
 
-    @Column( name = "user_type")
+    @Column(name = "user_type")
     private int userType;
 
 }

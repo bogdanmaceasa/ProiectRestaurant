@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserEntityToDTOMap {
 
-    public UserDTO mapFromEntityToDTO (UsersEntity usersEntity ) {
+    public UserDTO mapFromEntityToDTO(UsersEntity usersEntity) {
         return UserDTO.builder()
                 .id(usersEntity.getId())
                 .email(usersEntity.getEmail())

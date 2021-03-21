@@ -1,6 +1,6 @@
 create table project.restaurantspecialities
 (
-    id int auto_increment
+    id            int auto_increment
         primary key,
     restaurant_id int null,
     speciality_id int null,

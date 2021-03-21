@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpecialitiesRepository extends JpaRepository<SpecialitiesEntity,Integer> {
+public interface SpecialitiesRepository extends JpaRepository<SpecialitiesEntity, Integer> {
 
-    @Query(value =" select type from specialities u where u.id =?", nativeQuery = true)
+    @Query(value = " select type from specialities u where u.id =?", nativeQuery = true)
     String findTypeById(int id);
 
 }

@@ -10,13 +10,13 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
-@Table( name = "address")
+@Table(name = "address")
 public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String city;
 
     private String street;

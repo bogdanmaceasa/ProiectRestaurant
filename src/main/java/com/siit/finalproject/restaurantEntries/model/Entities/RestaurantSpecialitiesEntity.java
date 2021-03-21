@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
-@Table( name = "restaurantspecialities")
+@Table(name = "restaurantspecialities")
 @IdClass(CompositeKey.class)
 public class RestaurantSpecialitiesEntity {
 

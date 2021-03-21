@@ -49,14 +49,14 @@ public class RestaurantsService {
         // mapperForAddRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
         Set<SpecialitiesEntity> specialitiesEntitySet = restaurantPostDTO.getSpecialities()
-                                                                            .stream()
-                                                                            .map(s -> specialitiesRepository.findById(s).get())
-                                                                            .collect(Collectors.toSet());
+                .stream()
+                .map(s -> specialitiesRepository.findById(s).get())
+                .collect(Collectors.toSet());
         specialitiesEntitySet.stream()
-                                .forEach(s-> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
-                                                                                .restaurantId(restaurant.getId())
-                                                                                .specialityId(s.getId())
-                                                                                .build()));
+                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
+                        .restaurantId(restaurant.getId())
+                        .specialityId(s.getId())
+                        .build()));
 
 
         return restaurantPostDTO;
@@ -71,16 +71,16 @@ public class RestaurantsService {
                 .map(s -> specialitiesRepository.findById(s).get())
                 .collect(Collectors.toSet());
         specialitiesEntitySet.stream()
-                .forEach(s-> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
+                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
                         .restaurantId(restaurant.getId())
                         .specialityId(s.getId())
                         .build()));
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findByName(restaurantPostDTO.getName()));
     }
 
-    public Optional<RestaurantGetDTO> deleteRestaurant(Integer id){
+    public Optional<RestaurantGetDTO> deleteRestaurant(Integer id) {
         Optional<RestaurantGetDTO> restaurantsEntity = restaurantRepository.findById(id)
-                                                                            .map(mapperForGetRestaurants::mapEntityToGetDTO);
+                .map(mapperForGetRestaurants::mapEntityToGetDTO);
         restaurantsEntity.ifPresent(s -> restaurantRepository.deleteById(id));
 //        restaurantRepository.findById(id).orElseThrow(()-> new IllegalArgumentException());
 
