@@ -34,6 +34,9 @@ public class MapperForAddRestaurants {
         RestaurantsEntity rest = RestaurantsEntity.builder()
                 .name(restaurantPostDTO.getName())
                 .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
+                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
+                        .map(s-> specialitiesRepository.findById(s).get())
+                        .collect(Collectors.toSet()))
                 .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
                 .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
                 .build();

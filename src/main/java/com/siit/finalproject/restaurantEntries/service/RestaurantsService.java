@@ -45,17 +45,12 @@ public class RestaurantsService {
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
-        restaurantPostDTO.getSpecialities().stream()
-                .map(s -> specialitiesRepository.findById(s).get())
-                .forEach(s -> restaurant.addSpeciality(s));
-
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(restaurant.getId()).get());
     }
 
     public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
-        mapperForPostRestaurants.mapPostDTOToEntitySpecialities(restaurantPostDTO);
         return restaurantPostDTO;
     }
 
@@ -63,8 +58,6 @@ public class RestaurantsService {
         Optional<RestaurantGetDTO> restaurantsEntity = restaurantRepository.findById(id)
                 .map(mapperForGetRestaurants::mapEntityToGetDTO);
         restaurantsEntity.ifPresent(s -> restaurantRepository.deleteById(id));
-//        restaurantRepository.findById(id).orElseThrow(()-> new IllegalArgumentException());
-
         return restaurantsEntity;
     }
 

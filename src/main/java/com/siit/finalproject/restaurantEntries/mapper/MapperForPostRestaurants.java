@@ -31,17 +31,20 @@ public class MapperForPostRestaurants {
                                                 .name(restaurantPostDTO.getName())
                                                 .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
                                                 .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
+                                                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
+                                                        .map(s-> specialitiesRepository.findById(s).get())
+                                                        .collect(Collectors.toSet()))
                                                 .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
                                                 .build();
         return rest;
     }
 
-    public void mapPostDTOToEntitySpecialities(RestaurantPostDTO restaurantPostDTO) {
-
-        restaurantPostDTO.getSpecialities().stream()
-                .map(s-> specialitiesRepository.findById(s).get())
-                .forEach(s-> restaurantRepository.findById(restaurantPostDTO.getId()).get().addSpeciality(s));
-    }
+//    public void mapPostDTOToEntitySpecialities(RestaurantPostDTO restaurantPostDTO) {
+//
+//        restaurantPostDTO.getSpecialities().stream()
+//                .map(s-> specialitiesRepository.findById(s).get())
+//                .forEach(s-> restaurantRepository.findById(restaurantPostDTO.getId()).get().addSpeciality(s));
+//    }
 
 
 

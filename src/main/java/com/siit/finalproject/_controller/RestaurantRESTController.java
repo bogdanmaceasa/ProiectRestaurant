@@ -35,7 +35,6 @@ public class RestaurantRESTController {
         return restaurantsService.getAllRestaurants();
     }
 
-
     @GetMapping(value = "/specialities", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SpecialitiesDTO> getAllSpecialities() {
         return specialitiesService.getAllSpecialities();
