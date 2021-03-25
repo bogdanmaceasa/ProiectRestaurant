@@ -45,6 +45,7 @@ public class RestaurantsEntity {
             joinColumns = @JoinColumn(name="restaurant_id"),
             inverseJoinColumns= @JoinColumn(name="speciality_id"))
     @JsonManagedReference
+    @Builder.Default
     private Set<SpecialitiesEntity> specialitiesSet = new HashSet<>();
 
     public void addSpeciality(SpecialitiesEntity specialitiesEntity){
