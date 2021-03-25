@@ -1,5 +1,9 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "restaurantspecialities")
 //@IdClass(CompositeKey.class)
+
 public class RestaurantSpecialitiesEntity {
 
 //    @Id
@@ -32,11 +37,15 @@ public class RestaurantSpecialitiesEntity {
     @ManyToOne
     @MapsId("restaurantId")
     @JoinColumn(name = "restaurant_id")
+//    @JsonBackReference
+    @JsonIgnore
     RestaurantsEntity restaurantsEntity;
 
     @ManyToOne
     @MapsId("specialityId")
     @JoinColumn(name = "speciality_id")
+//    @JsonBackReference
+    @JsonIgnore
     SpecialitiesEntity specialitiesEntity;
 
 

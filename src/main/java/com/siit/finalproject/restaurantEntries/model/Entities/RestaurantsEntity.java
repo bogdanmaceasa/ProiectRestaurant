@@ -1,5 +1,9 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.siit.finalproject.booking.Booking;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +20,9 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "restaurants")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "specialities")
 public class RestaurantsEntity {
 
     @Id
@@ -28,7 +35,8 @@ public class RestaurantsEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
 
-    @OneToMany(mappedBy = "restaurantsEntity")
+    @OneToMany(mappedBy = "restaurantsEntity", fetch = FetchType.LAZY)
+//    @JsonManagedReference
     private Set<RestaurantSpecialitiesEntity> specialities;
 
     @OneToOne(fetch = FetchType.EAGER)
