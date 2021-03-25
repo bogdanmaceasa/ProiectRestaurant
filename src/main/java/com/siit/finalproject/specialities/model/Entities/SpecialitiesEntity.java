@@ -1,37 +1,46 @@
 package com.siit.finalproject.specialities.model.Entities;
 
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@Entity
+@Entity(name = "specialities")
 @Table(name = "specialities")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "restaurants")
 public class SpecialitiesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
+    @NaturalId
     private String type;
 
-    @OneToMany(mappedBy = "specialitiesEntity", fetch = FetchType.LAZY)
-//    @JsonManagedReference
-    private Set<RestaurantSpecialitiesEntity> restaurants;
+    @ManyToMany(mappedBy = "specialitiesSet")
+    @JsonBackReference
+    private Set<RestaurantsEntity> restaurants = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SpecialitiesEntity specialitiesEntity = (SpecialitiesEntity) o;
+        return Objects.equals(type, specialitiesEntity.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
+    }
+
 
 }

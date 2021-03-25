@@ -3,9 +3,6 @@ package com.siit.finalproject.restaurantEntries.model.DTO;
 import com.siit.finalproject.booking.Booking;
 import com.siit.finalproject.restaurantEntries.model.Entities.AddressEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.DetailsEntity;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
-import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
-import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
 
 import java.util.Set;
@@ -20,11 +17,7 @@ public class RestaurantGetDTO {
 
     private String name;
 
-    private Set<RestaurantSpecialitiesEntity> specialities;
-
-//    private Set<String> specialities;
-
-//    private Set<SpecialitiesDTO> specialities;
+    private Set<String> specialities;
 
     private DetailsEntity details;
 

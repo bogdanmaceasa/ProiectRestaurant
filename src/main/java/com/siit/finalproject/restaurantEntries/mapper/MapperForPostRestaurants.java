@@ -22,28 +22,27 @@ public class MapperForPostRestaurants {
     private final DetailsRepository detailsRepository;
     private final SpecialitiesRepository specialitiesRepository;
     private final BookingRepository bookingRepository;
-    private final RestaurantSpecialitiesRepository restaurantSpecialitiesRepository;
     private final RestaurantRepository restaurantRepository;
 
     // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
     public RestaurantsEntity mapPostDTOToEntity(RestaurantPostDTO restaurantPostDTO) {
-
-//        Set<RestaurantSpecialitiesEntity> set = restaurantPostDTO.getSpecialities()
-//                                                                        .stream()
-//                                                                        .map(s -> specialitiesRepository.findById(s).get())
-//                                                                        .map( s-> RestaurantSpecialitiesEntity.builder()
-//                                                                                                                .specialityId(s.getId())
-//                                                                                                                .restaurantId(restaurantPostDTO.getId())
-//                                                                                                                .build()
-//                                                                        )
-//                                                                        .collect(Collectors.toSet());
-        return RestaurantsEntity.builder()
-                .id(restaurantPostDTO.getId())
-                .name(restaurantPostDTO.getName())
-                .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
-//                .specialities(set)
-                .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
-                .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
-                .build();
+        RestaurantsEntity rest = RestaurantsEntity.builder()
+                                                .id(restaurantPostDTO.getId())
+                                                .name(restaurantPostDTO.getName())
+                                                .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
+                                                .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
+                                                .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
+                                                .build();
+        return rest;
     }
+
+    public void mapPostDTOToEntitySpecialities(RestaurantPostDTO restaurantPostDTO) {
+
+        restaurantPostDTO.getSpecialities().stream()
+                .map(s-> specialitiesRepository.findById(s).get())
+                .forEach(s-> restaurantRepository.findById(restaurantPostDTO.getId()).get().addSpeciality(s));
+    }
+
+
+
 }

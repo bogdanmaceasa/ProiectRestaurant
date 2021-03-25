@@ -2,6 +2,7 @@ package com.siit.finalproject._controller;
 
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
 import com.siit.finalproject.specialities.service.SpecialitiesService;
@@ -29,15 +30,11 @@ public class RestaurantRESTController {
     private final UserService userService;
     private final SpecialitiesService specialitiesService;
 
-//    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public List<RestaurantGetDTO> getAllRestaurants(){
-//        return restaurantsService.getAllRestaurants();
-//    }
-
-    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantGetDTO> getAllRestaurants() {
+    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RestaurantGetDTO> getAllRestaurants(){
         return restaurantsService.getAllRestaurants();
     }
+
 
     @GetMapping(value = "/specialities", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SpecialitiesDTO> getAllSpecialities() {

@@ -6,10 +6,10 @@ import com.siit.finalproject.restaurantEntries.mapper.MapperForPostRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
+//import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantSpecialitiesRepository;
+//import com.siit.finalproject.restaurantEntries.repository.RestaurantSpecialitiesRepository;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,7 +31,6 @@ public class RestaurantsService {
     private final MapperForPostRestaurants mapperForPostRestaurants;
     private final MapperForAddRestaurants mapperForAddRestaurants;
     private final SpecialitiesRepository specialitiesRepository;
-    private final RestaurantSpecialitiesRepository restaurantSpecialitiesRepository;
 
 
     public List<RestaurantGetDTO> getAllRestaurants() {
@@ -45,34 +41,22 @@ public class RestaurantsService {
 
     }
 
+
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
-//        Set<SpecialitiesEntity> specialitiesEntitySet = restaurantPostDTO.getSpecialities()
-//                .stream()
-//                .map(s -> specialitiesRepository.findById(s).get())
-//                .collect(Collectors.toSet());
-//        specialitiesEntitySet.stream()
-//                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
-//                        .restaurantId(restaurant.getId())
-//                        .specialityId(s.getId())
-//                        .build()));
+        restaurantPostDTO.getSpecialities().stream()
+                .map(s -> specialitiesRepository.findById(s).get())
+                .forEach(s -> restaurant.addSpeciality(s));
+
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(restaurant.getId()).get());
     }
 
     public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
-
-        restaurantPostDTO.getSpecialities()
-                .stream()
-                .map(s -> specialitiesRepository.findById(s).get())
-                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
-                        .restaurantsEntity(restaurantRepository.findById(restaurant.getId()).get())
-                        .specialitiesEntity(specialitiesRepository.findById(s.getId()).get())
-                        .build()));
-
-        return restaurantPostDTO; // WIP -> need to pass updated element or confirm changes.
+        mapperForPostRestaurants.mapPostDTOToEntitySpecialities(restaurantPostDTO);
+        return restaurantPostDTO;
     }
 
     public Optional<RestaurantGetDTO> deleteRestaurant(Integer id) {
