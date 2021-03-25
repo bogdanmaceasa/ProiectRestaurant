@@ -45,37 +45,34 @@ public class RestaurantsService {
 
     }
 
-    public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
-        // mapperForAddRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
-        RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
-        Set<SpecialitiesEntity> specialitiesEntitySet = restaurantPostDTO.getSpecialities()
-                .stream()
-                .map(s -> specialitiesRepository.findById(s).get())
-                .collect(Collectors.toSet());
-        specialitiesEntitySet.stream()
-                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
-                        .restaurantId(restaurant.getId())
-                        .specialityId(s.getId())
-                        .build()));
-
-
-        return restaurantPostDTO;
+    public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
+        // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
+        RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
+//        Set<SpecialitiesEntity> specialitiesEntitySet = restaurantPostDTO.getSpecialities()
+//                .stream()
+//                .map(s -> specialitiesRepository.findById(s).get())
+//                .collect(Collectors.toSet());
+//        specialitiesEntitySet.stream()
+//                .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
+//                        .restaurantId(restaurant.getId())
+//                        .specialityId(s.getId())
+//                        .build()));
+        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(restaurant.getId()).get());
     }
 
+    public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
+        // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
+        RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
 
-    public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
-        // mapperForAddRestaurants IGNORES the ID that is passed by the POST Method
-        RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
-        Set<SpecialitiesEntity> specialitiesEntitySet = restaurantPostDTO.getSpecialities()
+        restaurantPostDTO.getSpecialities()
                 .stream()
                 .map(s -> specialitiesRepository.findById(s).get())
-                .collect(Collectors.toSet());
-        specialitiesEntitySet.stream()
                 .forEach(s -> restaurantSpecialitiesRepository.save(RestaurantSpecialitiesEntity.builder()
-                        .restaurantId(restaurant.getId())
-                        .specialityId(s.getId())
+                        .restaurantsEntity(restaurantRepository.findById(restaurant.getId()).get())
+                        .specialitiesEntity(specialitiesRepository.findById(s.getId()).get())
                         .build()));
-        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findByName(restaurantPostDTO.getName()));
+
+        return restaurantPostDTO; // WIP -> need to pass updated element or confirm changes.
     }
 
     public Optional<RestaurantGetDTO> deleteRestaurant(Integer id) {

@@ -1,10 +1,7 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,10 +9,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Embeddable
+//@EqualsAndHashCode
 public class CompositeKey implements Serializable {
 
-    private Integer restaurantId;
+//    @Column(name = "restaurant_id")
+    Integer restaurantId;
 
-    private Integer specialityId;
+//    @Column(name = "speciality_id")
+    Integer specialityId;
 
 }

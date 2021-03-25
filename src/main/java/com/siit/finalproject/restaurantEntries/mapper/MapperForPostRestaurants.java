@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 @Builder
 @RequiredArgsConstructor
@@ -22,21 +25,23 @@ public class MapperForPostRestaurants {
     private final RestaurantSpecialitiesRepository restaurantSpecialitiesRepository;
     private final RestaurantRepository restaurantRepository;
 
-
+    // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
     public RestaurantsEntity mapPostDTOToEntity(RestaurantPostDTO restaurantPostDTO) {
-//        HashSet<RestaurantSpecialitiesEntity> set = restaurantPostDTO.getSpecialities()
+
+//        Set<RestaurantSpecialitiesEntity> set = restaurantPostDTO.getSpecialities()
 //                                                                        .stream()
 //                                                                        .map(s -> specialitiesRepository.findById(s).get())
 //                                                                        .map( s-> RestaurantSpecialitiesEntity.builder()
-//                                                                                                                .specialitiesEntity(s)
-//                                                                                                                .restaurantsEntity(restaurantJoinRepository.findById(restaurantPostDTO.getId()).get())
+//                                                                                                                .specialityId(s.getId())
+//                                                                                                                .restaurantId(restaurantPostDTO.getId())
 //                                                                                                                .build()
 //                                                                        )
-//                                                                        .collect(Collectors.toCollection(HashSet::new));
+//                                                                        .collect(Collectors.toSet());
         return RestaurantsEntity.builder()
                 .id(restaurantPostDTO.getId())
                 .name(restaurantPostDTO.getName())
                 .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
+//                .specialities(set)
                 .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
                 .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
                 .build();

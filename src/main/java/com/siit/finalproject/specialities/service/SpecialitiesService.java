@@ -20,7 +20,7 @@ public class SpecialitiesService {
     public List<SpecialitiesDTO> getAllSpecialities() {
         return specialitiesRepository.findAll()
                 .stream()
-                .map(s -> mapperForGetSpecialities.mapEntityToGetDTO(s))
+                .map(s -> mapperForGetSpecialities.mapSpecialitiesEntityToGetDTO(s))
                 .collect(toList());
     }
 

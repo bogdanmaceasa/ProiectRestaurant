@@ -24,7 +24,7 @@ public class SpecialitiesEntity {
 
     private String type;
 
-    @OneToMany(mappedBy = "specialityId")
+    @OneToMany(mappedBy = "specialitiesEntity")
     private Set<RestaurantSpecialitiesEntity> restaurants;
 
 }

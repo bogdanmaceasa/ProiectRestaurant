@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapperForGetSpecialities {
 
-    public SpecialitiesDTO mapEntityToGetDTO(SpecialitiesEntity specialitiesEntity) {
+    public SpecialitiesDTO mapSpecialitiesEntityToGetDTO(SpecialitiesEntity specialitiesEntity) {
         return SpecialitiesDTO.builder()
                 .id(specialitiesEntity.getId())
                 .type(specialitiesEntity.getType())

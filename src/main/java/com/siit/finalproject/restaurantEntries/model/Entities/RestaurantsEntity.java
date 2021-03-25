@@ -28,7 +28,7 @@ public class RestaurantsEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
 
-    @OneToMany(mappedBy = "restaurantId")
+    @OneToMany(mappedBy = "restaurantsEntity")
     private Set<RestaurantSpecialitiesEntity> specialities;
 
     @OneToOne(fetch = FetchType.EAGER)
