@@ -4,6 +4,7 @@ import com.siit.finalproject.booking.repository.BookingRepository;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.restaurantEntries.model.Entities.*;
 import com.siit.finalproject.restaurantEntries.repository.*;
+import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 @RequiredArgsConstructor
 @Component
-public class MapperForPostRestaurants {
+public class MapperForUpdateRestaurants {
 
     private final AddressRepository addressRepository;
     private final DetailsRepository detailsRepository;
@@ -24,8 +25,10 @@ public class MapperForPostRestaurants {
     private final BookingRepository bookingRepository;
     private final RestaurantRepository restaurantRepository;
 
+
+
     // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
-    public RestaurantsEntity mapPostDTOToEntity(RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantsEntity mapDTOToUpdateEntity(RestaurantPostDTO restaurantPostDTO) {
         RestaurantsEntity rest = RestaurantsEntity.builder()
                                                 .id(restaurantPostDTO.getId())
                                                 .name(restaurantPostDTO.getName())
@@ -34,18 +37,11 @@ public class MapperForPostRestaurants {
                                                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
                                                         .map(s-> specialitiesRepository.findById(s).get())
                                                         .collect(Collectors.toSet()))
-                                                .booking(bookingRepository.findById(restaurantPostDTO.getBookingId()).get())
+//                                                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
+//                                                        .map(s-> specialitiesRepository.findByType(s).orElse(specialitiesRepository.save(SpecialitiesEntity.builder().type(s).build())))
+//                                                        .collect(Collectors.toSet()))
+//                                              SET OF STRINGS THAT ALLOWS NEW SPECIALITIES TO BE ADDED, WHICH ARE PUSHED TO THE SPECIALITIES TABLE
                                                 .build();
         return rest;
     }
-
-//    public void mapPostDTOToEntitySpecialities(RestaurantPostDTO restaurantPostDTO) {
-//
-//        restaurantPostDTO.getSpecialities().stream()
-//                .map(s-> specialitiesRepository.findById(s).get())
-//                .forEach(s-> restaurantRepository.findById(restaurantPostDTO.getId()).get().addSpeciality(s));
-//    }
-
-
-
 }

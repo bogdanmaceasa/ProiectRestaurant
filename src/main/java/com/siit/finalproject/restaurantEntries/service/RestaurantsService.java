@@ -2,15 +2,12 @@ package com.siit.finalproject.restaurantEntries.service;
 
 
 import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForPostRestaurants;
+import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-//import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantSpecialitiesEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
-//import com.siit.finalproject.restaurantEntries.repository.RestaurantSpecialitiesRepository;
-import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +25,7 @@ public class RestaurantsService {
 
     private final RestaurantRepository restaurantRepository;
     private final MapperForGetRestaurants mapperForGetRestaurants;
-    private final MapperForPostRestaurants mapperForPostRestaurants;
+    private final MapperForUpdateRestaurants mapperForUpdateRestaurants;
     private final MapperForAddRestaurants mapperForAddRestaurants;
     private final SpecialitiesRepository specialitiesRepository;
 
@@ -38,7 +35,6 @@ public class RestaurantsService {
                 .stream()
                 .map(mapperForGetRestaurants::mapEntityToGetDTO)
                 .collect(toList());
-
     }
 
 
@@ -50,7 +46,7 @@ public class RestaurantsService {
 
     public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
-        RestaurantsEntity restaurant = restaurantRepository.save(mapperForPostRestaurants.mapPostDTOToEntity(restaurantPostDTO));
+        RestaurantsEntity restaurant = restaurantRepository.save(mapperForUpdateRestaurants.mapDTOToUpdateEntity(restaurantPostDTO));
         return restaurantPostDTO;
     }
 

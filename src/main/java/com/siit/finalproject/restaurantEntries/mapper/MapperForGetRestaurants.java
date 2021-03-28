@@ -31,7 +31,6 @@ public class MapperForGetRestaurants {
                         .map(s->s.getType())
                                 .collect(Collectors.toSet()))
                 .details(restaurantsEntity.getDetails())
-                .booking(restaurantsEntity.getBooking())
                 .build();
     }
 

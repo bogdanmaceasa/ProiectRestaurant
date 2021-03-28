@@ -1,9 +1,10 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.siit.finalproject.booking.Booking;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,6 +17,8 @@ import java.util.Set;
 @Builder
 @Entity(name = "restaurants")
 @Table(name = "restaurants")
+@NaturalIdCache
+@org.hibernate.annotations.Cache( usage = CacheConcurrencyStrategy.READ_WRITE )
 public class RestaurantsEntity {
 
     @Id
@@ -33,9 +36,6 @@ public class RestaurantsEntity {
     @JoinColumn(name = "details_id", referencedColumnName = "id")
     private DetailsEntity details;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    private Booking booking;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -47,6 +47,16 @@ public class RestaurantsEntity {
     @JsonManagedReference
     @Builder.Default
     private Set<SpecialitiesEntity> specialitiesSet = new HashSet<>();
+
+
+//    @OneToMany(
+//            mappedBy = "restaurantId",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    @JsonManagedReference
+//    private List<BookingEntity> bookings = new ArrayList<>();
+
 
     public void addSpeciality(SpecialitiesEntity specialitiesEntity){
         specialitiesSet.add(specialitiesEntity);
