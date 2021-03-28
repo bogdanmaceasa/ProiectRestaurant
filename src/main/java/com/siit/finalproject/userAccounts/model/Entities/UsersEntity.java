@@ -1,17 +1,14 @@
 package com.siit.finalproject.userAccounts.model.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.booking.model.BookingEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @AllArgsConstructor
@@ -26,10 +23,11 @@ public class UsersEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
 
+    @NaturalId
     private String email;
 
     private String password;
@@ -42,7 +40,7 @@ public class UsersEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-//    @JsonManagedReference
+    @JsonManagedReference
     private List<BookingEntity> bookings = new ArrayList<>();
 
 

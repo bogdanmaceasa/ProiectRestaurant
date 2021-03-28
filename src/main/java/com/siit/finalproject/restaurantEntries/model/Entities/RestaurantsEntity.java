@@ -1,10 +1,10 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NaturalIdCache;
+
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,8 +17,7 @@ import java.util.Set;
 @Builder
 @Entity(name = "restaurants")
 @Table(name = "restaurants")
-@NaturalIdCache
-@org.hibernate.annotations.Cache( usage = CacheConcurrencyStrategy.READ_WRITE )
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestaurantsEntity {
 
     @Id
@@ -47,7 +46,6 @@ public class RestaurantsEntity {
     @JsonManagedReference
     @Builder.Default
     private Set<SpecialitiesEntity> specialitiesSet = new HashSet<>();
-
 
 //    @OneToMany(
 //            mappedBy = "restaurantId",

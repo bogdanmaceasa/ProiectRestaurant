@@ -1,5 +1,6 @@
 package com.siit.finalproject.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class BookingEntity {
 
     @JoinColumn(name="user_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private UsersEntity userId;
 
     @Override

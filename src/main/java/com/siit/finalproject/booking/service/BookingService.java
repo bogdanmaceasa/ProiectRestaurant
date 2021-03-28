@@ -19,7 +19,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UsersRepository usersRepository;
 
-    public List<BookingEntity> getBookingsForUser (int id){
+    public List<BookingEntity> getBookingsForUser (Integer id){
         UsersEntity usersEntity = usersRepository.findById(id).get();
 
         return bookingRepository.findAllByUserId(usersEntity);

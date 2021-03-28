@@ -19,7 +19,7 @@ public class BookingRESTController {
     private final UserService userService;
 
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookingEntity> getBookingsForUser(@RequestParam int id) {
+    public List<BookingEntity> getBookingsForUser(@RequestParam Integer id) {
         return bookingService.getBookingsForUser(id);
     }
 
