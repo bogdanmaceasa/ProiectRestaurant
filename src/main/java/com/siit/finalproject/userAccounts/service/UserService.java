@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 import static java.util.stream.Collectors.toList;
@@ -35,4 +36,7 @@ public class UserService {
     }
 
 
+    public List<UsersEntity> findAll() {
+        return usersRepository.findAll();
+    }
 }

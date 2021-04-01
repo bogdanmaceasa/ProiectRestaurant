@@ -1,7 +1,7 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.siit.finalproject.booking.Booking;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Builder
-@Entity(name = "restaurants")
+@Entity(name = "RestaurantsEntity")
 @Table(name = "restaurants")
 public class RestaurantsEntity {
 
@@ -33,9 +33,6 @@ public class RestaurantsEntity {
     @JoinColumn(name = "details_id", referencedColumnName = "id")
     private DetailsEntity details;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    private Booking booking;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -47,6 +44,17 @@ public class RestaurantsEntity {
     @JsonManagedReference
     @Builder.Default
     private Set<SpecialitiesEntity> specialitiesSet = new HashSet<>();
+
+//    @OneToMany(
+//            mappedBy = "restaurantId",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+////    @JsonManagedReference
+//    @JsonBackReference
+//    @Builder.Default
+//    private Set<BookingEntity> bookings = new HashSet<>();
+
 
     public void addSpeciality(SpecialitiesEntity specialitiesEntity){
         specialitiesSet.add(specialitiesEntity);
@@ -69,5 +77,6 @@ public class RestaurantsEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 
 }

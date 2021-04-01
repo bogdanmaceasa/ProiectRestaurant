@@ -2,7 +2,6 @@ package com.siit.finalproject._controller;
 
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
 import com.siit.finalproject.specialities.service.SpecialitiesService;
@@ -23,14 +22,20 @@ import java.util.Optional;
 //@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token"})
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
-//@RequestMapping("/restaurants")
+@RequestMapping("/restaurants")
 public class RestaurantRESTController {
 
     private final RestaurantsService restaurantsService;
     private final UserService userService;
     private final SpecialitiesService specialitiesService;
 
-    @GetMapping(value="/restaurants",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/id",produces = MediaType.APPLICATION_JSON_VALUE)
+    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id){
+        return restaurantsService.findByID(id);
+    }
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RestaurantGetDTO> getAllRestaurants(){
         return restaurantsService.getAllRestaurants();
     }

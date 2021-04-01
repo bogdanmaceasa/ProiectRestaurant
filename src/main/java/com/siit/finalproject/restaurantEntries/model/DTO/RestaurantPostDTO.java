@@ -25,7 +25,7 @@ public class RestaurantPostDTO implements Serializable {
     @NotNull
     private int detailsId;
 
-    @NotNull
-    private int bookingId;
+//    @NotNull
+//    private int bookingId;
 
 }
