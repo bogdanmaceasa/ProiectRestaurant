@@ -66,5 +66,9 @@ public class RestaurantsService {
 
 //    }
 
+    public RestaurantGetDTO findByID(Integer id) {
+        return mapperForGetRestaurants.mapEntityToGetDTO( restaurantRepository.findById(id).get());
+    }
+
 
 }

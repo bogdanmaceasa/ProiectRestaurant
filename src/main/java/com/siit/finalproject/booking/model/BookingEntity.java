@@ -1,22 +1,20 @@
 package com.siit.finalproject.booking.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@Entity(name="BookingEntity")
 @Table(name="booking")
 public class BookingEntity {
 
@@ -32,13 +30,16 @@ public class BookingEntity {
     @Builder.Default
     private String status = "new";
 
-    @JoinColumn(name="restaurant_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="restaurant_id", referencedColumnName = "id")
+//    @JsonBackReference
+    @JsonManagedReference
     private RestaurantsEntity restaurantId;
 
-    @JoinColumn(name="user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+//    @JsonBackReference
+    @JsonManagedReference
     private UsersEntity userId;
 
     @Override
@@ -55,7 +56,7 @@ public class BookingEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(restaurantId,userId,bookingDate);
+        return Objects.hash(bookingDate,restaurantId,userId);
     }
 
 

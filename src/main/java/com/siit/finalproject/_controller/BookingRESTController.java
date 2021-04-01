@@ -1,13 +1,20 @@
 package com.siit.finalproject._controller;
 
-import com.siit.finalproject.booking.model.BookingEntity;
+import com.siit.finalproject.booking.DTO.*;
 import com.siit.finalproject.booking.service.BookingService;
+import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -18,9 +25,48 @@ public class BookingRESTController {
     private final BookingService bookingService;
     private final UserService userService;
 
+    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GetBookingDTO> getBookings() {
+        return bookingService.getAllBookings();
+    }
+
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookingEntity> getBookingsForUser(@RequestParam Integer id) {
+    public List<GetUserBookingsDTO> getBookingsForUser(@RequestParam Integer id) {
         return bookingService.getBookingsForUser(id);
+    }
+
+    @GetMapping(value = "/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GetRestaurantBookingsDTO> getBookingsForRestaurant(@RequestParam Integer id) {
+        return bookingService.getBookingsForRestaurant(id);
+    }
+
+
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GetBookingDTO> addBooking(@RequestBody PostBookingDTO bookingDTO) {
+        GetBookingDTO booking = bookingService.addBooking(bookingDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+                .buildAndExpand(booking.getId())
+                .toUri();
+        return ResponseEntity.created(uri)
+                .body(booking);
+    }
+
+    @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GetBookingDTO> editBooking(@RequestBody EditBookingDTO editBookingDTO) {
+        GetBookingDTO getBookingDTO = bookingService.editBooking(editBookingDTO);
+        return ResponseEntity.ok()
+                .body(getBookingDTO);
+    }
+
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<GetBookingDTO> deleteBooking(@RequestParam Integer id) {
+        Optional<GetBookingDTO> output = bookingService.deleteBooking(id);
+
+        if (output.isPresent())
+            return ResponseEntity.ok().build();
+
+        return ResponseEntity.notFound().build();
     }
 
 }

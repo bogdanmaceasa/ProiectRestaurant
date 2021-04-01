@@ -1,11 +1,15 @@
 package com.siit.finalproject.userAccounts.model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.booking.model.BookingEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import org.hibernate.annotations.Cache;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,6 +19,8 @@ import java.util.*;
 @NoArgsConstructor
 @Builder
 @Data
+@NaturalIdCache
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity(name = "UserEntity")
 @Table(name = "users")
 public class UsersEntity {
@@ -40,8 +46,10 @@ public class UsersEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonManagedReference
-    private List<BookingEntity> bookings = new ArrayList<>();
+//    @JsonManagedReference
+    @JsonBackReference
+    @Builder.Default
+    private Set<BookingEntity> bookings = new HashSet<>();
 
 
     public void addBooking(RestaurantsEntity restaurantsEntity) {
@@ -52,7 +60,7 @@ public class UsersEntity {
         bookings.add(bookingEntity);
     }
 
-    public void removeTag(RestaurantsEntity restaurantsEntity) {
+    public void removeBooking(RestaurantsEntity restaurantsEntity) {
         for (Iterator<BookingEntity> iterator = bookings.iterator();
              iterator.hasNext(); ) {
             BookingEntity bookingEntity = iterator.next();

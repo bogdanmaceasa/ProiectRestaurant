@@ -1,10 +1,9 @@
 package com.siit.finalproject.restaurantEntries.model.Entities;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
-
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,9 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Builder
-@Entity(name = "restaurants")
+@Entity(name = "RestaurantsEntity")
 @Table(name = "restaurants")
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RestaurantsEntity {
 
     @Id
@@ -52,8 +50,10 @@ public class RestaurantsEntity {
 //            cascade = CascadeType.ALL,
 //            orphanRemoval = true
 //    )
-//    @JsonManagedReference
-//    private List<BookingEntity> bookings = new ArrayList<>();
+////    @JsonManagedReference
+//    @JsonBackReference
+//    @Builder.Default
+//    private Set<BookingEntity> bookings = new HashSet<>();
 
 
     public void addSpeciality(SpecialitiesEntity specialitiesEntity){
@@ -77,5 +77,6 @@ public class RestaurantsEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 
 }

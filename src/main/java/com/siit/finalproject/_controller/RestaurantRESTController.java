@@ -29,6 +29,12 @@ public class RestaurantRESTController {
     private final UserService userService;
     private final SpecialitiesService specialitiesService;
 
+    @GetMapping(value="/id",produces = MediaType.APPLICATION_JSON_VALUE)
+    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id){
+        return restaurantsService.findByID(id);
+    }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RestaurantGetDTO> getAllRestaurants(){
         return restaurantsService.getAllRestaurants();
