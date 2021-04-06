@@ -32,7 +32,7 @@ public class MapperForAddRestaurants {
                 .name(restaurantPostDTO.getName())
                 .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-                        .map(s-> specialitiesRepository.findById(s).get())
+                        .map(s -> specialitiesRepository.findById(s).get())
                         .collect(Collectors.toSet()))
                 .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
                 .build();

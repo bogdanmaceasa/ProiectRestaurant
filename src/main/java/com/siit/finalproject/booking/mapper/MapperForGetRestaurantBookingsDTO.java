@@ -1,7 +1,7 @@
 package com.siit.finalproject.booking.mapper;
 
-import com.siit.finalproject.booking.DTO.GetRestaurantBookingsDTO;
-import com.siit.finalproject.booking.model.BookingEntity;
+import com.siit.finalproject.booking.model.DTO.GetRestaurantBookingsDTO;
+import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
 import com.siit.finalproject.userAccounts.mapper.UserEntityToDTOMap;
@@ -18,7 +18,7 @@ public class MapperForGetRestaurantBookingsDTO {
     private final UserEntityToDTOMap mapperForGetEntityToDTO;
     private final RestaurantsService restaurantsService;
 
-    public GetRestaurantBookingsDTO mapEntityToGetRestaurantBookingDTO(BookingEntity bookingEntity){
+    public GetRestaurantBookingsDTO mapEntityToGetRestaurantBookingDTO(BookingEntity bookingEntity) {
         return GetRestaurantBookingsDTO.builder()
                 .id(bookingEntity.getId())
                 .bookingDate(bookingEntity.getBookingDate())

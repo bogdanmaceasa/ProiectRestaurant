@@ -21,8 +21,8 @@ public class MapperForGetRestaurants {
                 .address(restaurantsEntity.getAddress())
                 .specialities(restaurantsEntity.getSpecialitiesSet()
                         .stream()
-                        .map(s->s.getType())
-                                .collect(Collectors.toSet()))
+                        .map(s -> s.getType())
+                        .collect(Collectors.toSet()))
                 .details(restaurantsEntity.getDetails())
                 .build();
     }

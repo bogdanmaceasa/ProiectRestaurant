@@ -1,9 +1,7 @@
 package com.siit.finalproject._controller;
 
-import com.siit.finalproject.booking.DTO.*;
+import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.service.BookingService;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -14,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -25,7 +22,7 @@ public class BookingRESTController {
     private final BookingService bookingService;
     private final UserService userService;
 
-    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GetBookingDTO> getBookings() {
         return bookingService.getAllBookings();
     }
@@ -62,7 +59,6 @@ public class BookingRESTController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity<GetBookingDTO> deleteBooking(@RequestParam Integer id) {
         Optional<GetBookingDTO> output = bookingService.deleteBooking(id);
-
         if (output.isPresent())
             return ResponseEntity.ok().build();
 

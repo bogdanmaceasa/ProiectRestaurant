@@ -1,17 +1,17 @@
 package com.siit.finalproject.userAccounts.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.siit.finalproject.booking.model.BookingEntity;
+import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
 import org.hibernate.annotations.Cache;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 
@@ -31,15 +31,24 @@ public class UsersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Builder.Default
+    private String name="TEST";
 
-    @NaturalId
+    @NotBlank
+    private String username;
+
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
     private String password;
 
-    @Column(name = "user_type")
-    private int userType;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RolesEntity> roles = new HashSet<>();
 
     @OneToMany(
             mappedBy = "userId",
@@ -54,9 +63,9 @@ public class UsersEntity {
 
     public void addBooking(RestaurantsEntity restaurantsEntity) {
         BookingEntity bookingEntity = BookingEntity.builder()
-                                                    .restaurantId(restaurantRepository.findById(restaurantsEntity.getId()).get())
-                                                    .userId(this)
-                                                    .build();
+                .restaurantId(restaurantRepository.findById(restaurantsEntity.getId()).get())
+                .userId(this)
+                .build();
         bookings.add(bookingEntity);
     }
 
@@ -84,7 +93,7 @@ public class UsersEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name,email);
+        return Objects.hash(name, email);
     }
 
 }

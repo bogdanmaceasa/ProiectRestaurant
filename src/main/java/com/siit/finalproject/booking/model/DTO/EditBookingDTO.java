@@ -1,7 +1,5 @@
-package com.siit.finalproject.booking.DTO;
+package com.siit.finalproject.booking.model.DTO;
 
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.userAccounts.model.DTO.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class GetRestaurantBookingsDTO {
+public class EditBookingDTO {
+
 
     private Integer id;
 
@@ -21,6 +21,9 @@ public class GetRestaurantBookingsDTO {
 
     private String status;
 
-    private UserDTO user;
+    private Integer restaurantId;
+
+    private Integer userId;
+
 
 }

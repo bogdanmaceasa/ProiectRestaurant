@@ -12,7 +12,6 @@ public class UserEntityToDTOMap {
                 .id(usersEntity.getId())
                 .email(usersEntity.getEmail())
                 .name(usersEntity.getName())
-                .userType(usersEntity.getUserType())
                 .build();
     }
 }

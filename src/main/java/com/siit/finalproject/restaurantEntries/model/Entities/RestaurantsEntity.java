@@ -39,8 +39,8 @@ public class RestaurantsEntity {
             CascadeType.MERGE
     })
     @JoinTable(name = "restaurantspecialities",
-            joinColumns = @JoinColumn(name="restaurant_id"),
-            inverseJoinColumns= @JoinColumn(name="speciality_id"))
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "speciality_id"))
     @JsonManagedReference
     @Builder.Default
     private Set<SpecialitiesEntity> specialitiesSet = new HashSet<>();
@@ -56,12 +56,12 @@ public class RestaurantsEntity {
 //    private Set<BookingEntity> bookings = new HashSet<>();
 
 
-    public void addSpeciality(SpecialitiesEntity specialitiesEntity){
+    public void addSpeciality(SpecialitiesEntity specialitiesEntity) {
         specialitiesSet.add(specialitiesEntity);
         specialitiesEntity.getRestaurants().add(this);
     }
 
-    public void removeSpeciality(SpecialitiesEntity specialitiesEntity){
+    public void removeSpeciality(SpecialitiesEntity specialitiesEntity) {
         specialitiesSet.remove(specialitiesEntity);
         specialitiesEntity.getRestaurants().remove(this);
     }

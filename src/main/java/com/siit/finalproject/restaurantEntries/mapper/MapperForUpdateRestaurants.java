@@ -26,22 +26,21 @@ public class MapperForUpdateRestaurants {
     private final RestaurantRepository restaurantRepository;
 
 
-
     // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
     public RestaurantsEntity mapDTOToUpdateEntity(RestaurantPostDTO restaurantPostDTO) {
         RestaurantsEntity rest = RestaurantsEntity.builder()
-                                                .id(restaurantPostDTO.getId())
-                                                .name(restaurantPostDTO.getName())
-                                                .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
-                                                .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
-                                                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-                                                        .map(s-> specialitiesRepository.findById(s).get())
-                                                        .collect(Collectors.toSet()))
+                .id(restaurantPostDTO.getId())
+                .name(restaurantPostDTO.getName())
+                .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
+                .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
+                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
+                        .map(s -> specialitiesRepository.findById(s).get())
+                        .collect(Collectors.toSet()))
 //                                                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
 //                                                        .map(s-> specialitiesRepository.findByType(s).orElse(specialitiesRepository.save(SpecialitiesEntity.builder().type(s).build())))
 //                                                        .collect(Collectors.toSet()))
 //                                              SET OF STRINGS THAT ALLOWS NEW SPECIALITIES TO BE ADDED, WHICH ARE PUSHED TO THE SPECIALITIES TABLE
-                                                .build();
+                .build();
         return rest;
     }
 }

@@ -1,20 +1,18 @@
-package com.siit.finalproject.booking.DTO;
+package com.siit.finalproject.booking.model.DTO;
 
+import com.siit.finalproject.userAccounts.model.DTO.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class EditBookingDTO {
-
+public class GetRestaurantBookingsDTO {
 
     private Integer id;
 
@@ -22,9 +20,6 @@ public class EditBookingDTO {
 
     private String status;
 
-    private Integer restaurantId;
-
-    private Integer userId;
-
+    private UserDTO user;
 
 }

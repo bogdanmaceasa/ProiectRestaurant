@@ -1,4 +1,4 @@
-package com.siit.finalproject.booking.model;
+package com.siit.finalproject.booking.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
@@ -14,8 +14,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Data
-@Entity(name="BookingEntity")
-@Table(name="booking")
+@Entity(name = "BookingEntity")
+@Table(name = "booking")
 public class BookingEntity {
 
     @Id
@@ -31,13 +31,13 @@ public class BookingEntity {
     private String status = "new";
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="restaurant_id", referencedColumnName = "id")
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
 //    @JsonBackReference
     @JsonManagedReference
     private RestaurantsEntity restaurantId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
 //    @JsonBackReference
     @JsonManagedReference
     private UsersEntity userId;
@@ -51,12 +51,12 @@ public class BookingEntity {
 
         BookingEntity that = (BookingEntity) o;
         return Objects.equals(restaurantId, that.restaurantId) &&
-                Objects.equals(userId, that.userId) && Objects.equals(bookingDate,that.bookingDate);
+                Objects.equals(userId, that.userId) && Objects.equals(bookingDate, that.bookingDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookingDate,restaurantId,userId);
+        return Objects.hash(bookingDate, restaurantId, userId);
     }
 
 

@@ -1,6 +1,6 @@
 package com.siit.finalproject.booking.comparator;
 
-import com.siit.finalproject.booking.model.BookingEntity;
+import com.siit.finalproject.booking.model.Entities.BookingEntity;
 
 import java.util.Comparator;
 

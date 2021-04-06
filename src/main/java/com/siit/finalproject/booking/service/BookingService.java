@@ -1,13 +1,12 @@
 package com.siit.finalproject.booking.service;
 
-import com.siit.finalproject.booking.DTO.*;
+import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.mapper.MapperForEditBookings;
 import com.siit.finalproject.booking.mapper.MapperForGetBookings;
 import com.siit.finalproject.booking.mapper.MapperForGetRestaurantBookingsDTO;
 import com.siit.finalproject.booking.mapper.MapperForGetUserBookingsDTO;
-import com.siit.finalproject.booking.model.BookingEntity;
+import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.booking.repository.BookingRepository;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
 import com.siit.finalproject.userAccounts.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +30,11 @@ public class BookingService {
     private final MapperForGetUserBookingsDTO mapperForGetUserBookingsDTO;
     private final MapperForEditBookings mapperForEditBookings;
 
-    public List<GetBookingDTO> getAllBookings (){
+    public List<GetBookingDTO> getAllBookings() {
         return bookingRepository.findAll().stream().map(mapperForGetBookings::mapperForGetBookingsEntityToDTO).collect(Collectors.toList());
     }
 
-    public List<GetUserBookingsDTO> getBookingsForUser (Integer id){
+    public List<GetUserBookingsDTO> getBookingsForUser(Integer id) {
         return bookingRepository.findAllByUserId(usersRepository.findById(id).get()).stream()
                 .sorted(Comparator.comparing((BookingEntity b1) -> b1.getBookingDate().getMonth())
                         .thenComparing((BookingEntity b1) -> b1.getBookingDate().getDayOfMonth())
@@ -45,7 +44,7 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetRestaurantBookingsDTO> getBookingsForRestaurant (Integer id){
+    public List<GetRestaurantBookingsDTO> getBookingsForRestaurant(Integer id) {
         return bookingRepository.findAllByRestaurantId(restaurantRepository.findById(id).get()).stream()
                 .sorted(Comparator.comparing((BookingEntity b1) -> b1.getBookingDate().getMonth())
                         .thenComparing((BookingEntity b1) -> b1.getBookingDate().getDayOfMonth())
@@ -56,15 +55,15 @@ public class BookingService {
     }
 
 
-    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO){
+    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) {
         BookingEntity bookingEntity = bookingRepository.save(BookingEntity.builder()
-                                        .restaurantId(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get())
-                                        .userId(usersRepository.findById(postBookingDTO.getUserId()).get())
-                                        .build());
+                .restaurantId(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get())
+                .userId(usersRepository.findById(postBookingDTO.getUserId()).get())
+                .build());
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity);
     }
 
-    public GetBookingDTO editBooking(EditBookingDTO editBookingDTO){
+    public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) {
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingRepository.save(mapperForEditBookings.mapEditDTOToEntity(editBookingDTO)));
     }
 

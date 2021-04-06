@@ -1,7 +1,5 @@
-package com.siit.finalproject.booking.DTO;
+package com.siit.finalproject.booking.model.DTO;
 
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.userAccounts.model.DTO.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +16,7 @@ import java.time.ZoneOffset;
 public class PostBookingDTO {
 
 
-    private LocalDateTime bookingDate=LocalDateTime.now(ZoneOffset.ofHours(2));
+    private LocalDateTime bookingDate = LocalDateTime.now(ZoneOffset.ofHours(2));
 
     private Integer restaurantId;
 

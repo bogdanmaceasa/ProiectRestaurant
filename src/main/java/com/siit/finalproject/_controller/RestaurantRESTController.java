@@ -29,14 +29,14 @@ public class RestaurantRESTController {
     private final UserService userService;
     private final SpecialitiesService specialitiesService;
 
-    @GetMapping(value="/id",produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id){
+    @GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id) {
         return restaurantsService.findByID(id);
     }
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantGetDTO> getAllRestaurants(){
+    public List<RestaurantGetDTO> getAllRestaurants() {
         return restaurantsService.getAllRestaurants();
     }
 
@@ -53,14 +53,14 @@ public class RestaurantRESTController {
 //    TO TRY ->
 //    public String getFoos(@RequestParam Optional<String> id){
 //        return "ID: " + id.orElseGet(() -> "not provided");
-
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
-        if (userService.checkUser(username, password) != null)
-            return ResponseEntity.accepted().body("Authenticated");
-
-        return ResponseEntity.notFound().build();
-    }
+//
+//    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
+//        if (userService.checkUser(username, password) != null)
+//            return ResponseEntity.accepted().body("Authenticated");
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
     @PostMapping(value = "/restaurants/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
