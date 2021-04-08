@@ -2,6 +2,7 @@ package com.siit.finalproject._controller;
 
 import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.service.BookingService;
+import com.siit.finalproject.exceptions.BookingNotValidException;
 import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -55,7 +56,7 @@ public class BookingRESTController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand(response)
                 .toUri();
-        if ( response.get().getClass().equals(IllegalArgumentException.class) )
+        if ( response.get().getClass().equals(BookingNotValidException.class) )
             return ResponseEntity.badRequest()
                     .body(response);
         return ResponseEntity.created(uri)

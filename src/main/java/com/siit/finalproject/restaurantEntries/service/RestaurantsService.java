@@ -11,6 +11,7 @@ import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RestaurantsService {
 
 

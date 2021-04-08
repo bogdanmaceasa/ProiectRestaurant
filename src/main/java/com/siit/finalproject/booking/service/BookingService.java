@@ -1,5 +1,6 @@
 package com.siit.finalproject.booking.service;
 
+import com.siit.finalproject.exceptions.BookingNotValidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.siit.finalproject.booking.model.DTO.*;
@@ -75,7 +76,7 @@ public class BookingService {
         int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get(),postBookingDTO.getBookingDate().minusHours(1),postBookingDTO.getBookingDate().plusHours(1));
         System.out.println("COUNT IS " + count);
         if (count > 5) {
-            return Optional.of(new IllegalArgumentException("No tables available on the desired hour"));
+            return Optional.of(new BookingNotValidException("No tables available on the desired hour"));
         }
         BookingEntity bookingEntity = bookingRepository.save(BookingEntity.builder()
                 .restaurantId(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get())
