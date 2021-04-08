@@ -62,8 +62,10 @@ public class BookingService {
     }
 
     public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) throws BookingNotValidException {
-        int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get(),postBookingDTO.getBookingDate().minusHours(2),postBookingDTO.getBookingDate().plusHours(1));
-        System.out.println(count + " booking during the desired interval");
+        int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(
+                restaurantRepository.findById(postBookingDTO.getRestaurantId()).get(),
+                postBookingDTO.getBookingDate().minusHours(2),
+                postBookingDTO.getBookingDate().plusHours(1));
         if (count > 5) {
             log.error(count + " booking during the desired interval");
             throw new BookingNotValidException("No tables available on the desired hour");
@@ -76,8 +78,10 @@ public class BookingService {
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity);
     }
 
+
     public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) {
-        bookingRepository.findById(editBookingDTO.getId()).orElseThrow(() -> new BookingNotFoundException("Booking with ID: " + editBookingDTO.getId() + " does not exist"));
+        bookingRepository.findById(editBookingDTO.getId())
+                .orElseThrow(() -> new BookingNotFoundException("Booking with ID: " + editBookingDTO.getId() + " does not exist"));
         BookingEntity bookingEntity = mapperForEditBookings.mapEditDTOToEntity(editBookingDTO);
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingRepository.save(bookingEntity));
     }

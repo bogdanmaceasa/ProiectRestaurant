@@ -23,20 +23,10 @@ public class UserService {
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
     private final UserEntityToDTOMap userEntityToDTOMap;
-    private final static int HASH = 123;
-
-
-    public UserDTO checkUser(String email, String password) {
-        UsersEntity user = usersRepository.findUsersEntityByEmail(email);
-        int value = user.getPassword().hashCode() * HASH;
-        if (String.valueOf(value).equals(password))
-            return userEntityToDTOMap.mapFromEntityToDTO(user);
-
-        return null;
-    }
-
 
     public List<UsersEntity> findAll() {
         return usersRepository.findAll();
     }
+
+
 }

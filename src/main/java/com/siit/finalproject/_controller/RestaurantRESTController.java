@@ -75,21 +75,16 @@ public class RestaurantRESTController {
 
 
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
-        RestaurantPostDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
-
+    public ResponseEntity<RestaurantGetDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
+        RestaurantGetDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
         return ResponseEntity.ok()
                 .body(updatedRestaurant);
     }
 
     @DeleteMapping(value = "/delete")
     public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id) {
-        Optional<RestaurantGetDTO> output = restaurantsService.deleteRestaurant(id);
-
-        if (output.isPresent())
-            return ResponseEntity.ok().build();
-
-        return ResponseEntity.notFound().build();
+        restaurantsService.deleteRestaurant(id);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.siit.finalproject.restaurantEntries.service;
 
 
+import com.siit.finalproject.exceptions.RestaurantNotFoundException;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
@@ -39,7 +40,6 @@ public class RestaurantsService {
                 .collect(toList());
     }
 
-
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
@@ -48,39 +48,39 @@ public class RestaurantsService {
 
     public List<RestaurantGetDTO> addRestaurantsBulk(List<RestaurantPostDTO> restaurantPostDTOList) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
-//        RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
         return restaurantPostDTOList.stream()
                 .map(restaurantPostDTO -> restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO)))
-                .map(mapperForGetRestaurants::mapEntityToGetDTO )
+                .map(mapperForGetRestaurants::mapEntityToGetDTO)
                 .collect(toList());
     }
 
-
-    public RestaurantPostDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantGetDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
+        restaurantRepository.findById(restaurantPostDTO.getId())
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + restaurantPostDTO.getId() + " does not exist"));
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForUpdateRestaurants.mapDTOToUpdateEntity(restaurantPostDTO));
-        return restaurantPostDTO;
+        return mapperForGetRestaurants.mapEntityToGetDTO(restaurant);
     }
 
-    public Optional<RestaurantGetDTO> deleteRestaurant(Integer id) {
-        Optional<RestaurantGetDTO> restaurantsEntity = restaurantRepository.findById(id)
-                .map(mapperForGetRestaurants::mapEntityToGetDTO);
-        restaurantsEntity.ifPresent(s -> restaurantRepository.deleteById(id));
-        return restaurantsEntity;
+    public void deleteRestaurant(Integer id) {
+        restaurantRepository.findById(id)
+                .map(mapperForGetRestaurants::mapEntityToGetDTO)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist"));
+        restaurantRepository.deleteById(id);
     }
+
+    public RestaurantGetDTO findByID(Integer id) {
+        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist")));
+    }
+
 
 //    public List<RestaurantDTO> searchRestaurantByName(String name) {
 //        return restaurantRepository.findAllByNameIsContaining(name)
 //                .stream()
 //                .map(rest -> restaurantsMapper.mapRestaurantsEntityToDTO(rest))
-
 //                .collect(toList());
-
 //    }
-
-    public RestaurantGetDTO findByID(Integer id) {
-        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id).get());
-    }
 
 
 }

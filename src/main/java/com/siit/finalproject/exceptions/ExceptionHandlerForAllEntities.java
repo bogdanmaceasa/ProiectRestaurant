@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class ExceptionHandlerForAllEntities {
 
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, BookingNotValidException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> badRequest(HttpServletResponse response, Exception ex, BindingResult bindingResult) {
         log.error(ex.getMessage(), ex);
         return ResponseEntity.badRequest().body(createErrorResponseForPathAndBodyValidationExceptions(ex, bindingResult));
@@ -29,6 +29,12 @@ public class ExceptionHandlerForAllEntities {
     public ResponseEntity<ErrorResponse> notFound(HttpServletResponse response, Exception ex) {
         log.error(ex.getMessage(), ex);
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({BookingNotValidException.class})
+    public ResponseEntity<ErrorResponse> badBookingRequest(HttpServletResponse response, Exception ex) {
+        log.error(ex.getMessage(), ex);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
