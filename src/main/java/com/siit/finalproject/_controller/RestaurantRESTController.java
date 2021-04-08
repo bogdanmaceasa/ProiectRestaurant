@@ -25,7 +25,6 @@ import java.util.Optional;
 public class RestaurantRESTController {
 
     private final RestaurantsService restaurantsService;
-    private final UserService userService;
     private final SpecialitiesService specialitiesService;
 
     @GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +57,6 @@ public class RestaurantRESTController {
     public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantGetDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
                 .buildAndExpand(createdRestaurant.getId())
                 .toUri();
         return ResponseEntity.created(uri)
@@ -69,7 +67,6 @@ public class RestaurantRESTController {
     public ResponseEntity<List<RestaurantGetDTO>> addRestaurantsBulk(@RequestBody List<RestaurantPostDTO> restaurantPostDTOList) {
         List<RestaurantGetDTO> restaurantGetDTOList = restaurantsService.addRestaurantsBulk(restaurantPostDTOList);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
                 .buildAndExpand(restaurantGetDTOList)
                 .toUri();
         return ResponseEntity.created(uri)

@@ -9,8 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +25,7 @@ public class ExceptionHandlerForAllEntities {
         return ResponseEntity.badRequest().body(createErrorResponseForPathAndBodyValidationExceptions(ex, bindingResult));
     }
 
-    @ExceptionHandler({RestaurantNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({RestaurantNotFoundException.class, UserNotFoundException.class, BookingNotFoundException.class})
     public ResponseEntity<ErrorResponse> notFound(HttpServletResponse response, Exception ex) {
         log.error(ex.getMessage(), ex);
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
