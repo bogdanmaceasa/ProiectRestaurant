@@ -1,5 +1,7 @@
 package com.siit.finalproject.booking.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.mapper.MapperForEditBookings;
 import com.siit.finalproject.booking.mapper.MapperForGetBookings;
@@ -55,12 +57,31 @@ public class BookingService {
     }
 
 
-    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) {
+//    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) {
+//        int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get(),postBookingDTO.getBookingDate().minusHours(1),postBookingDTO.getBookingDate().plusHours(1));
+//        System.out.println("COUNT IS " + count);
+//        BookingEntity bookingEntity = bookingRepository.save(BookingEntity.builder()
+//                .restaurantId(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get())
+//                .userId(usersRepository.findById(postBookingDTO.getUserId()).get())
+//                .build());
+//        return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity);
+//    }
+//
+//    public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) {
+//        return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingRepository.save(mapperForEditBookings.mapEditDTOToEntity(editBookingDTO)));
+//    }
+
+    public Optional<?> addBooking(PostBookingDTO postBookingDTO) {
+        int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get(),postBookingDTO.getBookingDate().minusHours(1),postBookingDTO.getBookingDate().plusHours(1));
+        System.out.println("COUNT IS " + count);
+        if (count > 5) {
+            return Optional.of(new IllegalArgumentException("No tables available on the desired hour"));
+        }
         BookingEntity bookingEntity = bookingRepository.save(BookingEntity.builder()
                 .restaurantId(restaurantRepository.findById(postBookingDTO.getRestaurantId()).get())
                 .userId(usersRepository.findById(postBookingDTO.getUserId()).get())
                 .build());
-        return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity);
+        return Optional.of(mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity));
     }
 
     public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) {

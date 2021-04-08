@@ -38,15 +38,28 @@ public class BookingRESTController {
     }
 
 
+//    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<GetBookingDTO> addBooking(@RequestBody PostBookingDTO bookingDTO) {
+//        GetBookingDTO booking = bookingService.addBooking(bookingDTO);
+//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+////                .path("/{id}")
+//                .buildAndExpand(booking.getId())
+//                .toUri();
+//        return ResponseEntity.created(uri)
+//                .body(booking);
+//    }
+
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GetBookingDTO> addBooking(@RequestBody PostBookingDTO bookingDTO) {
-        GetBookingDTO booking = bookingService.addBooking(bookingDTO);
+    public ResponseEntity<Optional<?>> addBooking(@RequestBody PostBookingDTO bookingDTO) {
+        Optional<?> response = bookingService.addBooking(bookingDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-                .buildAndExpand(booking.getId())
+                .buildAndExpand(response)
                 .toUri();
+        if ( response.get().getClass().equals(IllegalArgumentException.class) )
+            return ResponseEntity.badRequest()
+                    .body(response);
         return ResponseEntity.created(uri)
-                .body(booking);
+                .body(response);
     }
 
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
