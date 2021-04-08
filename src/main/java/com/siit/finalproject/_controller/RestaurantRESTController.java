@@ -65,6 +65,18 @@ public class RestaurantRESTController {
                 .body(createdRestaurant);
     }
 
+    @PostMapping(value = "/addbulk", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantGetDTO>> addRestaurantsBulk(@RequestBody List<RestaurantPostDTO> restaurantPostDTOList) {
+        List<RestaurantGetDTO> restaurantGetDTOList = restaurantsService.addRestaurantsBulk(restaurantPostDTOList);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+                .buildAndExpand(restaurantGetDTOList)
+                .toUri();
+        return ResponseEntity.created(uri)
+                .body(restaurantGetDTOList);
+    }
+
+
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantPostDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantPostDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
