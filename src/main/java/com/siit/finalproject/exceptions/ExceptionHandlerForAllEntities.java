@@ -3,6 +3,7 @@ package com.siit.finalproject.exceptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,7 +32,7 @@ public class ExceptionHandlerForAllEntities {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({BookingNotValidException.class})
+    @ExceptionHandler({BookingNotValidException.class,MissingRightsException.class, AccessDeniedException.class})
     public ResponseEntity<ErrorResponse> badBookingRequest(HttpServletResponse response, Exception ex) {
         log.error(ex.getMessage(), ex);
         return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);

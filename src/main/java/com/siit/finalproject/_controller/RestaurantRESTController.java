@@ -5,17 +5,16 @@ import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
 import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
 import com.siit.finalproject.specialities.service.SpecialitiesService;
-import com.siit.finalproject.userAccounts.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -52,7 +51,7 @@ public class RestaurantRESTController {
 //    public String getFoos(@RequestParam Optional<String> id){
 //        return "ID: " + id.orElseGet(() -> "not provided");
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantGetDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
@@ -63,6 +62,7 @@ public class RestaurantRESTController {
                 .body(createdRestaurant);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/addbulk", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestaurantGetDTO>> addRestaurantsBulk(@RequestBody List<RestaurantPostDTO> restaurantPostDTOList) {
         List<RestaurantGetDTO> restaurantGetDTOList = restaurantsService.addRestaurantsBulk(restaurantPostDTOList);
@@ -73,7 +73,7 @@ public class RestaurantRESTController {
                 .body(restaurantGetDTOList);
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantGetDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
         RestaurantGetDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
@@ -81,6 +81,7 @@ public class RestaurantRESTController {
                 .body(updatedRestaurant);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping(value = "/delete")
     public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id) {
         restaurantsService.deleteRestaurant(id);
