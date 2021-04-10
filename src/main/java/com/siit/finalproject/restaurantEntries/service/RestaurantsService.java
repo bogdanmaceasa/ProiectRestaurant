@@ -1,6 +1,8 @@
 package com.siit.finalproject.restaurantEntries.service;
 
 
+import com.siit.finalproject.address.repository.AddressRepository;
+import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
@@ -11,6 +13,7 @@ import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class RestaurantsService {
 
 
@@ -31,6 +35,7 @@ public class RestaurantsService {
     private final MapperForUpdateRestaurants mapperForUpdateRestaurants;
     private final MapperForAddRestaurants mapperForAddRestaurants;
     private final SpecialitiesRepository specialitiesRepository;
+    private final AddressRepository addressRepository;
 
 
     public List<RestaurantGetDTO> getAllRestaurants() {
@@ -42,6 +47,13 @@ public class RestaurantsService {
 
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
+        if (restaurantRepository.findByName(restaurantPostDTO.getName()).isPresent()
+                && !addressRepository.findByCity(restaurantPostDTO.getCity()).get().isEmpty()) {
+            throw new DuplicateRestaurantEntryException(
+                    "Another restaurant with name " +
+                    restaurantPostDTO.getName() +
+                    " exists in the same city");
+        }
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(restaurant.getId()).get());
     }

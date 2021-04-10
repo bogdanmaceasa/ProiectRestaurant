@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface SpecialitiesRepository extends JpaRepository<SpecialitiesEntity, Integer> {
 
 //    @Query(value = " select * from specialities u where u.id =?", nativeQuery = true)
-//    SpecialitiesEntity findTypeById(int id);
+    SpecialitiesEntity findTypeById(int id);
+    SpecialitiesEntity findByType(String type);
 
 }

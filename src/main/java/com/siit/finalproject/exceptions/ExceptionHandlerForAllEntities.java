@@ -1,6 +1,7 @@
 package com.siit.finalproject.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -36,6 +37,16 @@ public class ExceptionHandlerForAllEntities {
     public ResponseEntity<ErrorResponse> badBookingRequest(HttpServletResponse response, Exception ex) {
         log.error(ex.getMessage(), ex);
         return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class, DuplicateRestaurantEntryException.class})
+    public ResponseEntity<ErrorResponse> badSQLRequest(HttpServletResponse response, Exception ex) {
+        log.error(ex.getMessage(), ex);
+        return buildErrorResponse(
+                "Duplicate entries." +
+                "The information you have provided already exists in the system. " +
+                "Please check and try again.",
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

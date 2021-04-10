@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface DetailsRepository extends JpaRepository<DetailsEntity, Integer> {
 
-    Optional<DetailsEntity> findDetailsEntityByDetails(String string);
+    Optional<DetailsEntity> findByDetails(String string);
 }

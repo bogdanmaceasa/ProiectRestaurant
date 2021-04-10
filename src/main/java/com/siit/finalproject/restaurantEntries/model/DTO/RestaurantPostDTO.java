@@ -17,7 +17,10 @@ public class RestaurantPostDTO implements Serializable {
     private String name;
 
     @NotNull
-    private int addressId;
+    private String city;
+
+    @NotNull
+    private String address;
 
     @NotNull
     private Set<Integer> specialities;

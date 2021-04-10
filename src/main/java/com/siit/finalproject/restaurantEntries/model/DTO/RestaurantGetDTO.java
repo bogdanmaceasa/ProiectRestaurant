@@ -20,7 +20,9 @@ public class RestaurantGetDTO {
 
     private DetailsEntity details;
 
-    private AddressEntity address;
+    private String city;
+
+    private String address;
 
 //    private Set<BookingEntity> bookings;
 

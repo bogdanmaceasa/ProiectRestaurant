@@ -1,5 +1,6 @@
 package com.siit.finalproject.restaurantEntries.mapper;
 
+import com.siit.finalproject.address.model.entity.AddressEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.booking.repository.BookingRepository;
 import com.siit.finalproject.details.detailsTextProcessor.InputTextToFile;
@@ -12,6 +13,7 @@ import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Builder
 @RequiredArgsConstructor
 @Component
+@Transactional
 public class MapperForUpdateRestaurants {
 
     private final AddressRepository addressRepository;
@@ -38,8 +41,16 @@ public class MapperForUpdateRestaurants {
         RestaurantsEntity rest = RestaurantsEntity.builder()
                 .id(restaurantPostDTO.getId())
                 .name(restaurantPostDTO.getName())
-                .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
-                .details(detailsRepository.findDetailsEntityByDetails(details).orElse(detailsRepository.save(DetailsEntity.builder().details(details).build())))
+                .address(addressRepository.findByCityAndStreet(restaurantPostDTO.getCity(), restaurantPostDTO.getAddress())
+                        .orElse(AddressEntity.builder()
+                                .city(restaurantPostDTO.getCity())
+                                .street(restaurantPostDTO.getAddress())
+                                .build()))
+//                .address(addressRepository.findById(1).get())
+                .details(detailsRepository.findByDetails(details)
+                        .orElse(DetailsEntity.builder()
+                                .details(details)
+                                .build()))
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
                         .map(s -> specialitiesRepository.findById(s).get())
                         .collect(Collectors.toSet()))
