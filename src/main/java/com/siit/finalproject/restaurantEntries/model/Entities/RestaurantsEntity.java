@@ -2,8 +2,11 @@ package com.siit.finalproject.restaurantEntries.model.Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.siit.finalproject.address.model.entity.AddressEntity;
+import com.siit.finalproject.details.model.Entity.DetailsEntity;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,6 +25,7 @@ public class RestaurantsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NaturalId
     private String name;
 
     @OneToOne

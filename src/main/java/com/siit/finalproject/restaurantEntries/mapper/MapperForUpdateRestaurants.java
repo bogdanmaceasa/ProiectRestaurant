@@ -1,16 +1,18 @@
 package com.siit.finalproject.restaurantEntries.mapper;
 
+import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.booking.repository.BookingRepository;
+import com.siit.finalproject.details.detailsTextProcessor.InputTextToFile;
+import com.siit.finalproject.details.model.Entity.DetailsEntity;
+import com.siit.finalproject.details.repository.DetailsRepository;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.restaurantEntries.model.Entities.*;
 import com.siit.finalproject.restaurantEntries.repository.*;
-import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -26,13 +28,18 @@ public class MapperForUpdateRestaurants {
     private final RestaurantRepository restaurantRepository;
 
 
+
     // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
     public RestaurantsEntity mapDTOToUpdateEntity(RestaurantPostDTO restaurantPostDTO) {
+
+
+        String details = InputTextToFile.createOrUpdateFile(restaurantPostDTO.getName(), restaurantPostDTO.getDetailsInput());
+
         RestaurantsEntity rest = RestaurantsEntity.builder()
                 .id(restaurantPostDTO.getId())
                 .name(restaurantPostDTO.getName())
                 .address(addressRepository.findById(restaurantPostDTO.getAddressId()).get())
-                .details(detailsRepository.findById(restaurantPostDTO.getDetailsId()).get())
+                .details(detailsRepository.findDetailsEntityByDetails(details).orElse(detailsRepository.save(DetailsEntity.builder().details(details).build())))
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
                         .map(s -> specialitiesRepository.findById(s).get())
                         .collect(Collectors.toSet()))

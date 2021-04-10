@@ -1,4 +1,4 @@
-package com.siit.finalproject.restaurantEntries.model.Entities;
+package com.siit.finalproject.address.model.entity;
 
 
 import lombok.*;

@@ -1,7 +1,7 @@
 package com.siit.finalproject.restaurantEntries.model.DTO;
 
-import com.siit.finalproject.restaurantEntries.model.Entities.AddressEntity;
-import com.siit.finalproject.restaurantEntries.model.Entities.DetailsEntity;
+import com.siit.finalproject.address.model.entity.AddressEntity;
+import com.siit.finalproject.details.model.Entity.DetailsEntity;
 import lombok.*;
 
 import java.util.Set;

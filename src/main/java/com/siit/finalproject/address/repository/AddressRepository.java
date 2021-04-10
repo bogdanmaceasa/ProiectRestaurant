@@ -1,7 +1,7 @@
-package com.siit.finalproject.restaurantEntries.repository;
+package com.siit.finalproject.address.repository;
 
 
-import com.siit.finalproject.restaurantEntries.model.Entities.AddressEntity;
+import com.siit.finalproject.address.model.entity.AddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

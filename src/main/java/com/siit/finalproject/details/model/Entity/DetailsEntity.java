@@ -1,4 +1,4 @@
-package com.siit.finalproject.restaurantEntries.model.Entities;
+package com.siit.finalproject.details.model.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

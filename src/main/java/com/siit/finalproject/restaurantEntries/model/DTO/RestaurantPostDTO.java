@@ -25,6 +25,8 @@ public class RestaurantPostDTO implements Serializable {
     @NotNull
     private int detailsId;
 
+    private String detailsInput;
+
 //    @NotNull
 //    private int bookingId;
 

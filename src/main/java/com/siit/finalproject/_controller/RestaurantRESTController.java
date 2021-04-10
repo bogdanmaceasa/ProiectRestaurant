@@ -31,7 +31,6 @@ public class RestaurantRESTController {
         return restaurantsService.findByID(id);
     }
 
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RestaurantGetDTO> getAllRestaurants() {
         return restaurantsService.getAllRestaurants();
@@ -41,15 +40,6 @@ public class RestaurantRESTController {
     public List<SpecialitiesDTO> getAllSpecialities() {
         return specialitiesService.getAllSpecialities();
     }
-
-    //http://localhost:8080/restaurants/query?name=dei
-//    @GetMapping(value = "/query",produces = MediaType.APPLICATION_JSON_VALUE )
-//    public List<RestaurantGetDTO> searchRestaurantByName(@RequestParam String name){
-//        return restaurantsService.searchRestaurantByName(name);
-//    }
-//    TO TRY ->
-//    public String getFoos(@RequestParam Optional<String> id){
-//        return "ID: " + id.orElseGet(() -> "not provided");
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
