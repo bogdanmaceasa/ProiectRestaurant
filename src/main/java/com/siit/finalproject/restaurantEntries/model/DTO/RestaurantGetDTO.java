@@ -18,7 +18,7 @@ public class RestaurantGetDTO {
 
     private Set<String> specialities;
 
-    private DetailsEntity details;
+    private String details;
 
     private String city;
 

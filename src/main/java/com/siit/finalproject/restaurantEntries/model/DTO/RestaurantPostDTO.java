@@ -23,14 +23,8 @@ public class RestaurantPostDTO implements Serializable {
     private String address;
 
     @NotNull
-    private Set<Integer> specialities;
-
-    @NotNull
-    private int detailsId;
+    private Set<String> specialities;
 
     private String detailsInput;
-
-//    @NotNull
-//    private int bookingId;
 
 }

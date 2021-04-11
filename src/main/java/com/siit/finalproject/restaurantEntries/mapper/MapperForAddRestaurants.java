@@ -9,6 +9,7 @@ import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.details.repository.DetailsRepository;
 import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class MapperForAddRestaurants {
                         .street(restaurantPostDTO.getAddress())
                         .build()))
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-                        .map(s -> specialitiesRepository.findById(s).get())
+                        .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder().type(s).build()))
                         .collect(Collectors.toSet()))
                 .details(detailsRepository.findByDetails(details)
                         .orElse(DetailsEntity.builder()

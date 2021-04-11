@@ -24,7 +24,7 @@ public class MapperForGetRestaurants {
                         .stream()
                         .map(s -> s.getType())
                         .collect(Collectors.toSet()))
-                .details(restaurantsEntity.getDetails())
+                .details(restaurantsEntity.getDetails().getDetails())
                 .build();
     }
 

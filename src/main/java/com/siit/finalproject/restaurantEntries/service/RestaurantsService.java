@@ -1,6 +1,7 @@
 package com.siit.finalproject.restaurantEntries.service;
 
 
+import com.siit.finalproject.address.model.entity.AddressEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
@@ -45,15 +46,23 @@ public class RestaurantsService {
                 .collect(toList());
     }
 
+    public RestaurantGetDTO findByID(Integer id) {
+        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist")));
+    }
+
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
-        if (restaurantRepository.findByName(restaurantPostDTO.getName()).isPresent()
-                && !addressRepository.findByCity(restaurantPostDTO.getCity()).get().isEmpty()) {
-            throw new DuplicateRestaurantEntryException(
-                    "Another restaurant with name " +
-                    restaurantPostDTO.getName() +
-                    " exists in the same city");
+        Optional<RestaurantsEntity> restaurantsEntity = restaurantRepository.findByName(restaurantPostDTO.getName());
+        if (restaurantsEntity.isPresent()) {
+            if ( restaurantsEntity.get().getAddress().getCity().equals(restaurantPostDTO.getCity())) {
+                throw new DuplicateRestaurantEntryException(
+                        "Another restaurant with name " +
+                                restaurantPostDTO.getName() +
+                                " exists in the same city");
+            }
         }
+
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForAddRestaurants.mapAddDTOToEntity(restaurantPostDTO));
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(restaurant.getId()).get());
     }
@@ -68,8 +77,18 @@ public class RestaurantsService {
 
     public RestaurantGetDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
-        restaurantRepository.findById(restaurantPostDTO.getId())
+        RestaurantsEntity restaurantsEntity = restaurantRepository.findById(restaurantPostDTO.getId())
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + restaurantPostDTO.getId() + " does not exist"));
+        Optional<AddressEntity> addressEntity = addressRepository.findByCityAndStreet(restaurantPostDTO.getCity(),restaurantPostDTO.getAddress());
+
+        if ( addressEntity.isPresent()) {
+           if ( !restaurantsEntity.getAddress().equals(addressEntity.get())){
+               throw new DuplicateRestaurantEntryException("Another restaurant with address " +
+                       restaurantPostDTO.getAddress() +
+                       " exists in " + restaurantPostDTO.getCity());
+           }
+        }
+
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForUpdateRestaurants.mapDTOToUpdateEntity(restaurantPostDTO));
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurant);
     }
@@ -79,11 +98,6 @@ public class RestaurantsService {
                 .map(mapperForGetRestaurants::mapEntityToGetDTO)
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist"));
         restaurantRepository.deleteById(id);
-    }
-
-    public RestaurantGetDTO findByID(Integer id) {
-        return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist")));
     }
 
 
