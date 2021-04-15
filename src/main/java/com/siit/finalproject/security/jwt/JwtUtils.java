@@ -45,7 +45,10 @@ public class JwtUtils {
 
 //        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("authorize", roles.stream().map(s -> s.getRole().name()).filter(Objects::nonNull).collect(Collectors.toList()));
+        claims.put("authorize", roles.stream()
+                .map(s -> s.getRole().name())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
         Date now = new Date();
         Date validity  = new Date(now.getTime() + jwtExpirationMs);
         return Jwts.builder()

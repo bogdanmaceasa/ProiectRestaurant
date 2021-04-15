@@ -16,7 +16,7 @@ import java.util.Objects;
 @Data
 @Entity(name = "BookingEntity")
 @Table(name = "booking")
-public class BookingEntity {
+public class BookingEntity implements Comparable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,4 +60,9 @@ public class BookingEntity {
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        BookingEntity bookingEntity = (BookingEntity) o;
+        return this.getBookingDate().compareTo(bookingEntity.getBookingDate());
+    }
 }

@@ -7,13 +7,11 @@ import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
 import com.siit.finalproject.specialities.service.SpecialitiesService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 
@@ -42,40 +40,31 @@ public class RestaurantRESTController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantGetDTO> addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
-        RestaurantGetDTO createdRestaurant = restaurantsService.addRestaurant(restaurantPostDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .buildAndExpand(createdRestaurant.getId())
-                .toUri();
-        return ResponseEntity.created(uri)
-                .body(createdRestaurant);
+    public RestaurantGetDTO addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
+        return restaurantsService.addRestaurant(restaurantPostDTO);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/addbulk", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RestaurantGetDTO>> addRestaurantsBulk(@RequestBody List<RestaurantPostDTO> restaurantPostDTOList) {
-        List<RestaurantGetDTO> restaurantGetDTOList = restaurantsService.addRestaurantsBulk(restaurantPostDTOList);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .buildAndExpand(restaurantGetDTOList)
-                .toUri();
-        return ResponseEntity.created(uri)
-                .body(restaurantGetDTOList);
+    public List<RestaurantGetDTO> addRestaurantsBulk(@RequestBody List<RestaurantPostDTO> restaurantPostDTOList) {
+        return restaurantsService.addRestaurantsBulk(restaurantPostDTOList);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantGetDTO> updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
-        RestaurantGetDTO updatedRestaurant = restaurantsService.updateRestaurant(restaurantPostDTO);
-        return ResponseEntity.ok()
-                .body(updatedRestaurant);
+    public RestaurantGetDTO updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
+        return restaurantsService.updateRestaurant(restaurantPostDTO);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<RestaurantGetDTO> deleteRestaurant(@RequestParam Integer id) {
-        restaurantsService.deleteRestaurant(id);
-        return ResponseEntity.ok().build();
+    public void deleteRestaurant(@RequestParam Integer id) {
+         restaurantsService.deleteRestaurant(id);
     }
 
 }
