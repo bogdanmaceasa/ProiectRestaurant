@@ -1,23 +1,21 @@
 package com.siit.finalproject;
 
 import com.siit.finalproject.address.model.entity.AddressEntity;
-import com.siit.finalproject.booking.model.DTO.GetBookingDTO;
-import com.siit.finalproject.booking.model.DTO.GetUserBookingsDTO;
+import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.details.model.Entity.DetailsEntity;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.userAccounts.model.DTO.UserDTO;
 import com.siit.finalproject.userAccounts.model.Entities.RoleEnum;
 import com.siit.finalproject.userAccounts.model.Entities.RolesEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.sun.istack.NotNull;
+
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Set;
 
 public class RequestFactory {
@@ -37,6 +35,31 @@ public class RequestFactory {
             .type("italian")
             .build();
 
+    public static RolesEntity rolesEntity = RolesEntity.builder()
+            .role(RoleEnum.ADMIN)
+            .build();
+
+
+    //USER ENTITIES
+
+    public static UsersEntity usersEntity = UsersEntity.builder()
+            .name("Bogdan")
+            .email("bogdan.maceasa@gmail.com")
+            .username("bogdanmaceasa")
+            .password("!!!password123!!!")
+            .roles(Set.of(rolesEntity))
+            .id(1)
+            .build();
+
+    public static UserDTO userDTO = UserDTO.builder()
+            .userType(1)
+            .name("Bogdan")
+            .email("bogdan.maceasa@gmail.com")
+            .id(1)
+            .build();
+
+    //RESTAURANT ENTITIES
+
     public static RestaurantsEntity restaurantsEntity = RestaurantsEntity.builder()
             .details(detailsEntity)
             .specialitiesSet(Set.of(specialitiesEntity))
@@ -53,24 +76,29 @@ public class RequestFactory {
             .id(1)
             .build();
 
-    public static RolesEntity rolesEntity = RolesEntity.builder()
-            .role(RoleEnum.ADMIN)
-            .build();
-
-    public static UsersEntity usersEntity = UsersEntity.builder()
-            .name("Bogdan")
-            .email("bogdan.maceasa@gmail.com")
-            .username("bogdanmaceasa")
-            .password("!!!password123!!!")
-            .roles(Set.of(rolesEntity))
+    public static RestaurantPostDTO restaurantPostDTO = RestaurantPostDTO.builder()
+            .city("Brasov")
+            .specialities(Set.of("italian"))
+            .address("Calea Bucuresti")
+            .detailsInput("Calea Bucuresti, Brasov,Queen's Pub")
+            .name("Queen's Pub")
             .id(1)
             .build();
 
-    public static UserDTO userDTO = UserDTO.builder()
-            .userType(1)
-            .name("Bogdan")
-            .email("bogdan.maceasa@gmail.com")
+
+    //BOOKING ENTITIES
+
+    public static PostBookingDTO postBookingDTO =  PostBookingDTO.builder()
+            .bookingDate(LocalDateTime.now())
+            .restaurantId(1)
+            .userId(1)
+            .build();
+
+    public static EditBookingDTO editBookingDTO = EditBookingDTO.builder()
+            .bookingDate(LocalDateTime.now())
             .id(1)
+            .restaurantId(1)
+            .userId(1)
             .build();
 
     public static BookingEntity booking = BookingEntity.builder()
@@ -92,8 +120,9 @@ public class RequestFactory {
             .id(1)
             .build();
 
-    public static Object userDetails = new Object();
-
-
+    public static GetRestaurantBookingsDTO getRestaurantBookingsDTO = GetRestaurantBookingsDTO.builder()
+            .bookingDate(LocalDateTime.now())
+            .user(userDTO)
+            .build();
 
 }

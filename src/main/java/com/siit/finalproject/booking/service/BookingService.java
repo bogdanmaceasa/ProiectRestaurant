@@ -35,6 +35,7 @@ public class BookingService {
     private final MapperForGetRestaurantBookingsDTO mapperForGetRestaurantBookingsDTO;
     private final MapperForGetUserBookingsDTO mapperForGetUserBookingsDTO;
     private final MapperForEditBookings mapperForEditBookings;
+    private final GetDataFromSecurityContext getDataFromSecurityContext;
 
     public List<GetBookingDTO> getAllBookings() {
         return bookingRepository.findAll().stream()
@@ -48,11 +49,10 @@ public class BookingService {
 
 //      If the user trying to make this request is NOT an ADMIN,
 //      he will only be able to check his and only his bookings
-        if (!GetDataFromSecurityContext.isAdminFromSecurityContext()) {
-            if (!usersRepository.findByUsername(GetDataFromSecurityContext.getUsernameFromSecurityContext()).get().getId().equals(id)) {
+        if (!getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(id)) {
                 throw new MissingRightsException("You can only check your bookings!");
             }
-        }
+
         return bookingRepository.findAllByUserId(usersEntity).stream()
                 .sorted()
                 .map(mapperForGetUserBookingsDTO::mapEntityToGetUserBookingsDTO)
@@ -76,18 +76,17 @@ public class BookingService {
 
 //      If the user trying to make this request is NOT an ADMIN,
 //      he will only be able to add bookings for himself only
-        if (!GetDataFromSecurityContext.isAdminFromSecurityContext()) {
-            if (!usersRepository.findByUsername(GetDataFromSecurityContext.getUsernameFromSecurityContext()).get().getId().equals(postBookingDTO.getUserId())) {
+        if (!getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(postBookingDTO.getUserId())) {
                 throw new MissingRightsException("You can only add bookings for yourself!");
             }
-        }
+
         int count = bookingRepository.countAllByRestaurantIdAndBookingDateBetween(
                 restaurantsEntity,
                 postBookingDTO.getBookingDate().minusHours(1),
                 postBookingDTO.getBookingDate().plusHours(1));
 
         if (count >= 5) {
-            log.error(count + " booking during the desired interval");
+            log.debug(count + " booking during the desired interval");
             throw new BookingNotValidException("No tables available on the desired hour");
         }
 
@@ -106,12 +105,10 @@ public class BookingService {
 
 //      If the user trying to make this request is NOT an ADMIN,
 //      he will only be able to edit his and only his bookings
-        if (!GetDataFromSecurityContext.isAdminFromSecurityContext()) {
-            if (!usersRepository.findByUsername(GetDataFromSecurityContext.getUsernameFromSecurityContext()).get().getId()
-                    .equals(bookingRepository.findById(editBookingDTO.getId()).get().getUserId().getId())) {
+        if (!getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(editBookingDTO.getUserId())) {
                 throw new MissingRightsException("You can only edit your bookings!");
             }
-        }
+
         BookingEntity bookingEntity = mapperForEditBookings.mapEditDTOToEntity(editBookingDTO);
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingRepository.save(bookingEntity));
     }
@@ -124,13 +121,9 @@ public class BookingService {
 //      If the user trying to make this request is NOT an ADMIN,
 //      he will only be able to delete his and only his bookings
 
-        if (!GetDataFromSecurityContext.isAdminFromSecurityContext()) {
-            if (!usersRepository.findByUsername(GetDataFromSecurityContext.getUsernameFromSecurityContext()).get().getId()
-                    .equals(bookingRepository.findById(id).get().getUserId().getId())) {
+        if (!getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(bookingRepository.findById(id).get().getUserId().getId())) {
                 throw new MissingRightsException("You can only delete your bookings!");
             }
-        }
-
         bookingRepository.delete(bookingDTO);
     }
 

@@ -54,10 +54,7 @@ public class MapperForUpdateRestaurants {
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
                         .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder().type(s).build()))
                         .collect(Collectors.toSet()))
-//                                                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-//                                                        .map(s-> specialitiesRepository.findByType(s).orElse(specialitiesRepository.save(SpecialitiesEntity.builder().type(s).build())))
-//                                                        .collect(Collectors.toSet()))
-//                                              SET OF STRINGS THAT ALLOWS NEW SPECIALITIES TO BE ADDED, WHICH ARE PUSHED TO THE SPECIALITIES TABLE
+
                 .build();
         return rest;
     }

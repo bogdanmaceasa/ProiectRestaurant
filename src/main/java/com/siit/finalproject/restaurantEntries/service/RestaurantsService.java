@@ -1,8 +1,8 @@
 package com.siit.finalproject.restaurantEntries.service;
 
 
-import com.siit.finalproject.address.model.entity.AddressEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
+import com.siit.finalproject.address.service.AddressService;
 import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
@@ -37,6 +37,7 @@ public class RestaurantsService {
     private final MapperForAddRestaurants mapperForAddRestaurants;
     private final SpecialitiesRepository specialitiesRepository;
     private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
 
     public List<RestaurantGetDTO> getAllRestaurants() {
@@ -56,6 +57,7 @@ public class RestaurantsService {
         Optional<RestaurantsEntity> restaurantsEntity = restaurantRepository.findByName(restaurantPostDTO.getName());
         if (restaurantsEntity.isPresent()) {
             if ( restaurantsEntity.get().getAddress().getCity().equals(restaurantPostDTO.getCity())) {
+
                 throw new DuplicateRestaurantEntryException(
                         "Another restaurant with name " +
                                 restaurantPostDTO.getName() +
@@ -79,15 +81,12 @@ public class RestaurantsService {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
         RestaurantsEntity restaurantsEntity = restaurantRepository.findById(restaurantPostDTO.getId())
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + restaurantPostDTO.getId() + " does not exist"));
-        Optional<AddressEntity> addressEntity = addressRepository.findByCityAndStreet(restaurantPostDTO.getCity(),restaurantPostDTO.getAddress());
-
-        if ( addressEntity.isPresent()) {
-           if ( !restaurantsEntity.getAddress().equals(addressEntity.get())){
+        if ( addressService.checkIfAddressExists(restaurantPostDTO, restaurantsEntity)){
                throw new DuplicateRestaurantEntryException("Another restaurant with address " +
                        restaurantPostDTO.getAddress() +
                        " exists in " + restaurantPostDTO.getCity());
            }
-        }
+
 
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForUpdateRestaurants.mapDTOToUpdateEntity(restaurantPostDTO));
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurant);
@@ -99,14 +98,5 @@ public class RestaurantsService {
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist"));
         restaurantRepository.deleteById(id);
     }
-
-
-//    public List<RestaurantDTO> searchRestaurantByName(String name) {
-//        return restaurantRepository.findAllByNameIsContaining(name)
-//                .stream()
-//                .map(rest -> restaurantsMapper.mapRestaurantsEntityToDTO(rest))
-//                .collect(toList());
-//    }
-
 
 }
