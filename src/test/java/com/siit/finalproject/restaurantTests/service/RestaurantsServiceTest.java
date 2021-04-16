@@ -6,6 +6,7 @@ import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
 import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
+import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
@@ -42,6 +43,9 @@ public class RestaurantsServiceTest {
     @Mock
     private AddressService addressService;
 
+    @Mock
+    private MapperForUpdateRestaurants mapperForUpdateRestaurants;
+
 
     //Tests for restaurantsService.getAllRestaurants()
     @Test
@@ -64,7 +68,6 @@ public class RestaurantsServiceTest {
 
         List<RestaurantsEntity> restaurantsEntityList = new ArrayList<>();
         Mockito.when(restaurantRepository.findAll()).thenReturn(restaurantsEntityList);
-        Mockito.when(mapperForGetRestaurants.mapEntityToGetDTO(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantGetDTO);
 
         List<RestaurantGetDTO> restaurantGetDTOList = restaurantsService.getAllRestaurants();
 
@@ -148,7 +151,7 @@ public class RestaurantsServiceTest {
         Mockito.when(addressService.checkIfAddressExists(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(false);
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantsEntity);
         Mockito.when(mapperForGetRestaurants.mapEntityToGetDTO(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantGetDTO);
-        Mockito.when(mapperForGetRestaurants.mapEntityToGetDTO(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantGetDTO);
+        Mockito.when(mapperForUpdateRestaurants.mapDTOToUpdateEntity(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantsEntity);
 
         RestaurantGetDTO restaurantGetDTO1 = restaurantsService.updateRestaurant(RequestFactory.restaurantPostDTO);
         Assertions.assertThat(restaurantGetDTO1).isEqualTo(RequestFactory.restaurantGetDTO);
