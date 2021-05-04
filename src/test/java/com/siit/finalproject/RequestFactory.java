@@ -4,15 +4,14 @@ import com.siit.finalproject.address.model.entity.AddressEntity;
 import com.siit.finalproject.booking.model.DTO.*;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.details.model.Entity.DetailsEntity;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.userAccounts.model.DTO.UserDTO;
 import com.siit.finalproject.userAccounts.model.Entities.RoleEnum;
 import com.siit.finalproject.userAccounts.model.Entities.RolesEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
-import com.sun.istack.NotNull;
 
 
 import java.time.LocalDateTime;

@@ -4,14 +4,14 @@ import com.siit.finalproject.RequestFactory;
 import com.siit.finalproject.address.service.AddressService;
 import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
-import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
+import com.siit.finalproject.restaurant.mapper.MapperForAddRestaurants;
+import com.siit.finalproject.restaurant.mapper.MapperForGetRestaurants;
+import com.siit.finalproject.restaurant.mapper.MapperForUpdateRestaurants;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.service.RestaurantsService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -146,7 +146,7 @@ public class RestaurantsServiceTest {
 
     //Tests for restaurantsService.updateRestaurant()
     @Test
-    public void updateRestaurantGivenRestaurantExistsAndNoConflicts(){
+    public void updateRestaurantGivenRestaurantExistsAndNoConflicts() throws DuplicateRestaurantEntryException, RestaurantNotFoundException {
         Mockito.when(restaurantRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.restaurantsEntity));
         Mockito.when(addressService.checkIfAddressExists(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(false);
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantsEntity);

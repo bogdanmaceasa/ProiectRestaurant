@@ -51,7 +51,7 @@ public class UserService {
     }
 
 
-    public JwtResponse signin(LoginRequest loginRequest) {
+    public JwtResponse signin(LoginRequest loginRequest) throws UserNotFoundException {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));

@@ -2,8 +2,8 @@ package com.siit.finalproject.booking.mapper;
 
 import com.siit.finalproject.booking.model.DTO.GetUserBookingsDTO;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
-import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
+import com.siit.finalproject.restaurant.mapper.MapperForGetRestaurants;
+import com.siit.finalproject.restaurant.service.RestaurantsService;
 import com.siit.finalproject.userAccounts.mapper.UserEntityToDTOMap;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

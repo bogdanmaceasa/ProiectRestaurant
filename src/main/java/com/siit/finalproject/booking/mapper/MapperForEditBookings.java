@@ -2,7 +2,7 @@ package com.siit.finalproject.booking.mapper;
 
 import com.siit.finalproject.booking.model.DTO.EditBookingDTO;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.userAccounts.repository.UsersRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

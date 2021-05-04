@@ -1,6 +1,6 @@
 package com.siit.finalproject.booking.model.DTO;
 
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

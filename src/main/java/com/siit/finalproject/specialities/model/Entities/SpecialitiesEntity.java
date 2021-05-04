@@ -1,7 +1,7 @@
 package com.siit.finalproject.specialities.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 

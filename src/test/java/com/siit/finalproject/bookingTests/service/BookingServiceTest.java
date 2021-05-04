@@ -10,7 +10,7 @@ import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.booking.repository.BookingRepository;
 import com.siit.finalproject.booking.service.BookingService;
 import com.siit.finalproject.exceptions.*;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.security.service.GetDataFromSecurityContext;
 import com.siit.finalproject.userAccounts.repository.UsersRepository;
 import org.junit.Rule;
@@ -107,7 +107,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void getBookingsForUserGivenUserIsCheckingHisBookingsAndBookingsExist() {
+    public void getBookingsForUserGivenUserIsCheckingHisBookingsAndBookingsExist() throws UserNotFoundException, MissingRightsException {
 
         Mockito.when(bookingRepository.findAllByUserId(ArgumentMatchers.any())).thenReturn(Set.of(RequestFactory.booking));
         Mockito.when(usersRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.usersEntity));
@@ -123,7 +123,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void getBookingsForUserGivenUserIsCheckingHisBookingsAndBookingsDoNotExist() {
+    public void getBookingsForUserGivenUserIsCheckingHisBookingsAndBookingsDoNotExist() throws UserNotFoundException, MissingRightsException {
 
         Mockito.when(usersRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.usersEntity));
         Mockito.when(bookingRepository.findAllByUserId(ArgumentMatchers.any())).thenReturn(Set.of());
@@ -138,7 +138,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void getBookingsForUserGivenUserIsCheckingOtherBookingsOrIsNotAdmin() {
+    public void getBookingsForUserGivenUserIsCheckingOtherBookingsOrIsNotAdmin() throws UserNotFoundException, MissingRightsException {
 
         Mockito.when(usersRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.usersEntity));
         Mockito.when(getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(1)).thenReturn(false);
@@ -150,7 +150,7 @@ public class BookingServiceTest {
 
     //Tests for bookingService.getBookingsForRestaurant()
     @Test
-    public void getBookingsForRestaurantGivenRestaurantAndBookingsExist() {
+    public void getBookingsForRestaurantGivenRestaurantAndBookingsExist() throws RestaurantNotFoundException {
 
         Set<BookingEntity> bookingEntityList = new HashSet<>();
         bookingEntityList.add(RequestFactory.booking);
@@ -177,7 +177,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void getBookingsForRestaurantGivenRestaurantExistsAndHasNoBookings() {
+    public void getBookingsForRestaurantGivenRestaurantExistsAndHasNoBookings() throws RestaurantNotFoundException {
 
         Set<BookingEntity> bookingEntityList = new HashSet<>();
         Mockito.when(restaurantRepository.findById(1)).thenReturn(Optional.ofNullable(RequestFactory.restaurantsEntity));
@@ -193,7 +193,7 @@ public class BookingServiceTest {
 
     //Tests for bookingService.addBooking()
     @Test
-    public void addBookingGivenUserAddsForHimselfAndUserExistsAndRestaurantExistsAndLessThanFiveBookingsForRestaurant() {
+    public void addBookingGivenUserAddsForHimselfAndUserExistsAndRestaurantExistsAndLessThanFiveBookingsForRestaurant() throws UserNotFoundException, RestaurantNotFoundException, MissingRightsException, BookingNotValidException {
 
         Mockito.when(restaurantRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.restaurantsEntity));
         Mockito.when(usersRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.usersEntity));
@@ -261,7 +261,7 @@ public class BookingServiceTest {
 
     //Tests for bookingService.editBooking()
     @Test
-    public void editBookingGivenBookingExistsAndUserHasPermission() {
+    public void editBookingGivenBookingExistsAndUserHasPermission() throws MissingRightsException, BookingNotFoundException {
         Mockito.when(bookingRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.booking));
         Mockito.when(getDataFromSecurityContext.checkIfRequestPermittedForLoggedUser(1)).thenReturn(true);
         Mockito.when(mapperForEditBookings.mapEditDTOToEntity(ArgumentMatchers.any())).thenReturn(RequestFactory.booking);

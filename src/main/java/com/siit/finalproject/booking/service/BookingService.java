@@ -1,7 +1,7 @@
 package com.siit.finalproject.booking.service;
 
 import com.siit.finalproject.exceptions.*;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
 import com.siit.finalproject.security.service.GetDataFromSecurityContext;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import com.siit.finalproject.booking.mapper.MapperForGetRestaurantBookingsDTO;
 import com.siit.finalproject.booking.mapper.MapperForGetUserBookingsDTO;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
 import com.siit.finalproject.booking.repository.BookingRepository;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.userAccounts.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetUserBookingsDTO> getBookingsForUser(Integer id) {
+    public List<GetUserBookingsDTO> getBookingsForUser(Integer id) throws UserNotFoundException, MissingRightsException {
         UsersEntity usersEntity = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("No user with ID " + id));
 
@@ -59,7 +59,7 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetRestaurantBookingsDTO> getBookingsForRestaurant(Integer id) {
+    public List<GetRestaurantBookingsDTO> getBookingsForRestaurant(Integer id) throws RestaurantNotFoundException {
         RestaurantsEntity restaurantsEntity = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException("No restaurant with ID " + id));
         return bookingRepository.findAllByRestaurantId(restaurantsEntity).stream()
@@ -68,7 +68,7 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) {
+    public GetBookingDTO addBooking(PostBookingDTO postBookingDTO) throws RestaurantNotFoundException, UserNotFoundException, MissingRightsException, BookingNotValidException {
         RestaurantsEntity restaurantsEntity = restaurantRepository.findById(postBookingDTO.getRestaurantId())
                 .orElseThrow(() -> new RestaurantNotFoundException(""));
         UsersEntity usersEntity = usersRepository.findById(postBookingDTO.getUserId())
@@ -98,7 +98,7 @@ public class BookingService {
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingEntity);
     }
 
-    public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) {
+    public GetBookingDTO editBooking(EditBookingDTO editBookingDTO) throws BookingNotFoundException, MissingRightsException {
 
         bookingRepository.findById(editBookingDTO.getId())
                 .orElseThrow(() -> new BookingNotFoundException("Booking with ID: " + editBookingDTO.getId() + " does not exist"));
@@ -113,7 +113,7 @@ public class BookingService {
         return mapperForGetBookings.mapperForGetBookingsEntityToDTO(bookingRepository.save(bookingEntity));
     }
 
-    public void deleteBooking(Integer id) {
+    public void deleteBooking(Integer id) throws BookingNotFoundException, MissingRightsException {
 
         BookingEntity bookingDTO = bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException("Booking with ID: " + id + " does not exist"));

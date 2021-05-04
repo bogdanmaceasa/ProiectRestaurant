@@ -2,8 +2,8 @@ package com.siit.finalproject.userAccounts.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import org.hibernate.annotations.Cache;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

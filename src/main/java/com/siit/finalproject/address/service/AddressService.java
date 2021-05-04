@@ -2,8 +2,8 @@ package com.siit.finalproject.address.service;
 
 import com.siit.finalproject.address.model.entity.AddressEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,11 @@
 package com.siit.finalproject._controller;
 
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
+import com.siit.finalproject.exceptions.RestaurantNotFoundException;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.specialities.model.DTO.SpecialitiesDTO;
-import com.siit.finalproject.restaurantEntries.service.RestaurantsService;
+import com.siit.finalproject.restaurant.service.RestaurantsService;
 import com.siit.finalproject.specialities.service.SpecialitiesService;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +27,7 @@ public class RestaurantRESTController {
     private final SpecialitiesService specialitiesService;
 
     @GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id) {
+    public RestaurantGetDTO getRestaurantById(@RequestParam Integer id) throws RestaurantNotFoundException {
         return restaurantsService.findByID(id);
     }
 
@@ -42,7 +44,7 @@ public class RestaurantRESTController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantGetDTO addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantGetDTO addRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) throws DuplicateRestaurantEntryException {
         return restaurantsService.addRestaurant(restaurantPostDTO);
     }
 
@@ -56,14 +58,14 @@ public class RestaurantRESTController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping(value = "/modify", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantGetDTO updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantGetDTO updateRestaurant(@RequestBody RestaurantPostDTO restaurantPostDTO) throws DuplicateRestaurantEntryException, RestaurantNotFoundException {
         return restaurantsService.updateRestaurant(restaurantPostDTO);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/delete")
-    public void deleteRestaurant(@RequestParam Integer id) {
+    public void deleteRestaurant(@RequestParam Integer id) throws RestaurantNotFoundException {
          restaurantsService.deleteRestaurant(id);
     }
 

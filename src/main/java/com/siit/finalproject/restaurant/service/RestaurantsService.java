@@ -1,17 +1,17 @@
-package com.siit.finalproject.restaurantEntries.service;
+package com.siit.finalproject.restaurant.service;
 
 
 import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.address.service.AddressService;
 import com.siit.finalproject.exceptions.DuplicateRestaurantEntryException;
 import com.siit.finalproject.exceptions.RestaurantNotFoundException;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForAddRestaurants;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForUpdateRestaurants;
-import com.siit.finalproject.restaurantEntries.mapper.MapperForGetRestaurants;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurantEntries.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurantEntries.model.Entities.RestaurantsEntity;
-import com.siit.finalproject.restaurantEntries.repository.RestaurantRepository;
+import com.siit.finalproject.restaurant.mapper.MapperForAddRestaurants;
+import com.siit.finalproject.restaurant.mapper.MapperForUpdateRestaurants;
+import com.siit.finalproject.restaurant.mapper.MapperForGetRestaurants;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
+import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
+import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +47,12 @@ public class RestaurantsService {
                 .collect(toList());
     }
 
-    public RestaurantGetDTO findByID(Integer id) {
+    public RestaurantGetDTO findByID(Integer id) throws RestaurantNotFoundException {
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist")));
     }
 
-    public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) throws DuplicateRestaurantEntryException {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
         Optional<RestaurantsEntity> restaurantsEntity = restaurantRepository.findByName(restaurantPostDTO.getName());
         if (restaurantsEntity.isPresent()) {
@@ -77,7 +77,7 @@ public class RestaurantsService {
                 .collect(toList());
     }
 
-    public RestaurantGetDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) {
+    public RestaurantGetDTO updateRestaurant(RestaurantPostDTO restaurantPostDTO) throws DuplicateRestaurantEntryException, RestaurantNotFoundException {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
         RestaurantsEntity restaurantsEntity = restaurantRepository.findById(restaurantPostDTO.getId())
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + restaurantPostDTO.getId() + " does not exist"));
@@ -92,7 +92,7 @@ public class RestaurantsService {
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurant);
     }
 
-    public void deleteRestaurant(Integer id) {
+    public void deleteRestaurant(Integer id) throws RestaurantNotFoundException {
         restaurantRepository.findById(id)
                 .map(mapperForGetRestaurants::mapEntityToGetDTO)
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist"));

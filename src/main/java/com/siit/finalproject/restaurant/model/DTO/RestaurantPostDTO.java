@@ -1,4 +1,4 @@
-package com.siit.finalproject.restaurantEntries.model.DTO;
+package com.siit.finalproject.restaurant.model.DTO;
 
 import com.sun.istack.NotNull;
 import lombok.*;

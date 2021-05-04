@@ -1,6 +1,7 @@
 package com.siit.finalproject._controller;
 
 
+import com.siit.finalproject.exceptions.UserNotFoundException;
 import com.siit.finalproject.security.payload.request.LoginRequest;
 import com.siit.finalproject.security.payload.request.SignupRequest;
 import com.siit.finalproject.security.payload.response.JwtResponse;
@@ -19,7 +20,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws UserNotFoundException {
         JwtResponse authResponse = userService.signin(loginRequest);
         return ResponseEntity.ok(authResponse);
     }
