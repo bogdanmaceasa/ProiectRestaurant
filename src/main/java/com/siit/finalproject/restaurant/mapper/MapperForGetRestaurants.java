@@ -1,7 +1,7 @@
 package com.siit.finalproject.restaurant.mapper;
 
 import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

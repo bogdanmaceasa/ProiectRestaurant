@@ -1,7 +1,7 @@
 package com.siit.finalproject.booking.service;
 
 import com.siit.finalproject.exceptions.*;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.security.service.GetDataFromSecurityContext;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
 import lombok.extern.slf4j.Slf4j;

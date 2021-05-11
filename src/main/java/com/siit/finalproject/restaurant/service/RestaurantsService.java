@@ -10,7 +10,7 @@ import com.siit.finalproject.restaurant.mapper.MapperForUpdateRestaurants;
 import com.siit.finalproject.restaurant.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,14 +49,16 @@ public class RestaurantsService {
 
     public RestaurantGetDTO findByID(Integer id) throws RestaurantNotFoundException {
         return mapperForGetRestaurants.mapEntityToGetDTO(restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + id + " does not exist")));
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:"
+                                                                            + id
+                                                                            + " does not exist")));
     }
 
     public RestaurantGetDTO addRestaurant(RestaurantPostDTO restaurantPostDTO) throws DuplicateRestaurantEntryException {
         // mapperForAddRestaurants IGNORES the ID that is passed by the POST Object
         Optional<RestaurantsEntity> restaurantsEntity = restaurantRepository.findByName(restaurantPostDTO.getName());
         if (restaurantsEntity.isPresent()) {
-            if ( restaurantsEntity.get().getAddress().getCity().equals(restaurantPostDTO.getCity())) {
+            if (restaurantsEntity.get().getAddress().getCity().equals(restaurantPostDTO.getCity())) {
 
                 throw new DuplicateRestaurantEntryException(
                         "Another restaurant with name " +
@@ -81,11 +83,11 @@ public class RestaurantsService {
         // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the PUT Object
         RestaurantsEntity restaurantsEntity = restaurantRepository.findById(restaurantPostDTO.getId())
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID:" + restaurantPostDTO.getId() + " does not exist"));
-        if ( addressService.checkIfAddressExists(restaurantPostDTO, restaurantsEntity)){
-               throw new DuplicateRestaurantEntryException("Another restaurant with address " +
-                       restaurantPostDTO.getAddress() +
-                       " exists in " + restaurantPostDTO.getCity());
-           }
+        if (addressService.checkIfAddressExists(restaurantPostDTO, restaurantsEntity)) {
+            throw new DuplicateRestaurantEntryException("Another restaurant with address " +
+                    restaurantPostDTO.getAddress() +
+                    " exists in " + restaurantPostDTO.getCity());
+        }
 
 
         RestaurantsEntity restaurant = restaurantRepository.save(mapperForUpdateRestaurants.mapDTOToUpdateEntity(restaurantPostDTO));

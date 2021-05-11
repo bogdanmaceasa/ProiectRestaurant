@@ -7,7 +7,7 @@ import com.siit.finalproject.details.detailsTextProcessor.InputTextToFile;
 import com.siit.finalproject.details.model.Entity.DetailsEntity;
 import com.siit.finalproject.details.repository.DetailsRepository;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurant.model.Entities.*;
+import com.siit.finalproject.restaurant.model.entities.*;
 import com.siit.finalproject.restaurant.repository.*;
 import com.siit.finalproject.specialities.model.Entities.SpecialitiesEntity;
 import com.siit.finalproject.specialities.repository.SpecialitiesRepository;
@@ -36,25 +36,27 @@ public class MapperForUpdateRestaurants {
     // mapperForPostRestaurants DOES NOT IGNORE the ID that is passed by the POST Method
     public RestaurantsEntity mapDTOToUpdateEntity(RestaurantPostDTO restaurantPostDTO) {
 
-
-        String details = InputTextToFile.createOrUpdateFile(restaurantPostDTO.getName(), restaurantPostDTO.getDetailsInput());
+        String details = InputTextToFile.createOrUpdateFile(restaurantPostDTO.getName(),
+                restaurantPostDTO.getDetailsInput());
 
         RestaurantsEntity rest = RestaurantsEntity.builder()
                 .id(restaurantPostDTO.getId())
                 .name(restaurantPostDTO.getName())
-                .address(addressRepository.findByCityAndStreet(restaurantPostDTO.getCity(), restaurantPostDTO.getAddress())
+                .address(addressRepository.findByCityAndStreet(restaurantPostDTO.getCity(),
+                                                                restaurantPostDTO.getAddress())
                         .orElse(AddressEntity.builder()
                                 .city(restaurantPostDTO.getCity())
                                 .street(restaurantPostDTO.getAddress())
                                 .build()))
+                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
+                        .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder()
+                                                                                        .type(s)
+                                                                                        .build()))
+                        .collect(Collectors.toSet()))
                 .details(detailsRepository.findByDetails(details)
                         .orElse(DetailsEntity.builder()
                                 .details(details)
                                 .build()))
-                .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-                        .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder().type(s).build()))
-                        .collect(Collectors.toSet()))
-
                 .build();
         return rest;
     }

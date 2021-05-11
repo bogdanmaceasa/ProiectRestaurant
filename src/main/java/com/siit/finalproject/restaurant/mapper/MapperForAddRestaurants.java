@@ -5,7 +5,7 @@ import com.siit.finalproject.booking.repository.BookingRepository;
 import com.siit.finalproject.details.detailsTextProcessor.InputTextToFile;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
 import com.siit.finalproject.details.model.Entity.DetailsEntity;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.address.repository.AddressRepository;
 import com.siit.finalproject.details.repository.DetailsRepository;
 import com.siit.finalproject.restaurant.repository.RestaurantRepository;
@@ -33,8 +33,8 @@ public class MapperForAddRestaurants {
 
     public RestaurantsEntity mapAddDTOToEntity(RestaurantPostDTO restaurantPostDTO) {
 
-        String details = InputTextToFile.createOrUpdateFile(restaurantPostDTO.getName(), restaurantPostDTO.getDetailsInput());
-
+        String details = InputTextToFile.createOrUpdateFile(restaurantPostDTO.getName(),
+                restaurantPostDTO.getDetailsInput());
 
         RestaurantsEntity rest = RestaurantsEntity.builder()
                 .name(restaurantPostDTO.getName())
@@ -43,7 +43,9 @@ public class MapperForAddRestaurants {
                         .street(restaurantPostDTO.getAddress())
                         .build()))
                 .specialitiesSet(restaurantPostDTO.getSpecialities().stream()
-                        .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder().type(s).build()))
+                        .map(s -> specialitiesRepository.findByType(s).orElse(SpecialitiesEntity.builder()
+                                                                                                .type(s)
+                                                                                                .build()))
                         .collect(Collectors.toSet()))
                 .details(detailsRepository.findByDetails(details)
                         .orElse(DetailsEntity.builder()

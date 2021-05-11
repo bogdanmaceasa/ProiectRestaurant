@@ -9,7 +9,7 @@ import com.siit.finalproject.restaurant.mapper.MapperForGetRestaurants;
 import com.siit.finalproject.restaurant.mapper.MapperForUpdateRestaurants;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantGetDTO;
 import com.siit.finalproject.restaurant.model.DTO.RestaurantPostDTO;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.restaurant.repository.RestaurantRepository;
 import com.siit.finalproject.restaurant.service.RestaurantsService;
 import org.assertj.core.api.Assertions;
@@ -79,7 +79,7 @@ public class RestaurantsServiceTest {
 
     //Tests for restaurantsService.findByID()
     @Test
-    public void findByIdGivenRestaurantExists(){
+    public void findByIdGivenRestaurantExists() throws RestaurantNotFoundException {
 
         Mockito.when(restaurantRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.ofNullable(RequestFactory.restaurantsEntity));
         Mockito.when(mapperForGetRestaurants.mapEntityToGetDTO(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantGetDTO);
@@ -103,7 +103,7 @@ public class RestaurantsServiceTest {
 
     //Tests for restaurantsService.addRestaurant()
     @Test
-    public void addRestaurantGivenRestaurantNotInDatabase(){
+    public void addRestaurantGivenRestaurantNotInDatabase() throws DuplicateRestaurantEntryException {
 
         Mockito.when(restaurantRepository.findByName(ArgumentMatchers.any())).thenReturn(Optional.empty());
         Mockito.when(mapperForAddRestaurants.mapAddDTOToEntity(ArgumentMatchers.any())).thenReturn(RequestFactory.restaurantsEntity);

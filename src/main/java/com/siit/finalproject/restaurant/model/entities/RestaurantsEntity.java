@@ -1,5 +1,4 @@
-package com.siit.finalproject.restaurant.model.Entities;
-
+package com.siit.finalproject.restaurant.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.siit.finalproject.address.model.entity.AddressEntity;

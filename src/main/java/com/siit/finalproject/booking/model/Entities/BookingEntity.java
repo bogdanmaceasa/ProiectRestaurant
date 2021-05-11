@@ -1,7 +1,7 @@
 package com.siit.finalproject.booking.model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
 import lombok.*;
 

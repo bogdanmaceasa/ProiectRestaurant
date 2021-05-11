@@ -1,7 +1,7 @@
 package com.siit.finalproject.booking.repository;
 
 import com.siit.finalproject.booking.model.Entities.BookingEntity;
-import com.siit.finalproject.restaurant.model.Entities.RestaurantsEntity;
+import com.siit.finalproject.restaurant.model.entities.RestaurantsEntity;
 import com.siit.finalproject.userAccounts.model.Entities.UsersEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
